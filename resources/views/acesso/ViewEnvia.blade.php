@@ -1,0 +1,5 @@
+@if(Session::has('sucess'))
+<div class='alert alert-success'>
+    {{Session::get('success')}}
+</div>
+@endif
