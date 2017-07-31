@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-
 use App\Acesso;
-
-use Yajra\Datatables\Facades\Datatables;
+use App\Notificacao;
 
 class AcessoController extends Controller {
+
+    public function __construct() {
+        $this->middleware('auth');
+    }
 
     public function index() {
 
@@ -17,11 +19,14 @@ class AcessoController extends Controller {
 //
         $acessos = $acesso->acessosLst();
 
-        return view('acesso.ViewIndex', compact('acessos'));
+        
+        $notificacaoLst = Notificacao::notificacaoLst();
+
+        return view('acesso.ViewIndex', compact('acessos', 'notificacaoLst'));
 //        return view('acesso.ViewIndex');
     }
-    
-    public function get_datatable(){
+
+    public function get_datatable() {
         return Datatables::eloquent(Acesso::query())->make(true);
     }
 
@@ -47,10 +52,10 @@ class AcessoController extends Controller {
 
         $acesso = new Acesso();
 
-        $acesso->sendData($request);
+        $send = $acesso->sendData($request);
 
         if ($request->id <> 0) {
-            return redirect()->route('acesso')->with('info', 'Acesso ' . $request->acesso . ' editado com sucesso');
+            response()->json($send);
         } else {
             return redirect()->route('acesso')->with('success', 'Acesso cadastrado com sucesso!');
         }

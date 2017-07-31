@@ -25,7 +25,8 @@ use AuthenticatesUsers;
      *
      * @var string
      */
-    protected $redirectTo = '/senhas/index';
+//    protected $redirectTo = '/senhas/index';
+    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.

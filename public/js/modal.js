@@ -64,27 +64,25 @@ function action(datan, name, id0t, target) {
 
             $(document).ready(function () {
 
-                $('.modal-footer').on('click', '.edit', function (e) {
-                    e.preventDefault();
+                $('.modal-footer').on('click', '.edit', function () {
+//                    e.preventDefault();
 //                    alert(caller);
                     $.ajax({
-                        dataType: 'json',
+//                        dataType: 'json',
                         type: 'post',
                         url: end,
                         data: $("form").serialize(),
-                        success: function (response) {
-                            $('#login').val(response.login);
-//                            alert($('#login').val(response.login));
-                            //                                console.log(data);
-                            toastr.info('Atualizado ' + name, 'Atualizado', {timeOut: 5000});
-//                                $('#users-table table').append(response);
-//                                 $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td>" + data.id + "</td><td>" + data.name + "</td><td><button class='edit-modal btn btn-info' data-id='" + data.id + "' data-name='" + data.name + "'><span class='glyphicon glyphicon-edit'></span> Edit</button> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-name='" + data.name + "' ><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");
+                        success: function (data) {
+//                            alert(data);
+                            toastr.info('Atualizado ' + name, 'Atualizado', {
+                                showDuration: 1000,
+                                timeOut: 5000
 
-//                            caller.parents('tr').doSomething();
+                            });
+                            setTimeout('window.location.reload(true)', 2000);
 
                         }
                     });
-                    return false;
                 });
 
             });
@@ -135,8 +133,13 @@ function action(datan, name, id0t, target) {
                     url: end,
                     data: $("form").serialize(),
                     success: function (data) {
-                        toastr.success('Registro ' + name + ' removido.', 'Deletado', {timeOut: 5000});
-//                        $('.item' + $('.did').text()).remove();
+                        toastr.info('Sucesso', 'Registro Adicionado', {
+                            showDuration: 1000,
+                            timeOut: 5000
+
+                        });
+                        setTimeout('window.location.reload(true)', 2000);
+
                     }
                 });
             });

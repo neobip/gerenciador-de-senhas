@@ -47,7 +47,7 @@
 
                 </div>
                 <!-- /.panel-heading -->
-                <div class="panel-body">
+                <div class="panel-body" id='tabela'>
                     <!--<table id="users-table"  class="table table-striped table-bordered table-hover" cellspacing="0"  width="100%">-->
                     <table id="users-table"  width="100%" class="table table-striped table-bordered table-hover">
                         <thead>

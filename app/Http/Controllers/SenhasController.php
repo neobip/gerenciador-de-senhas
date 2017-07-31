@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Yajra\Datatables\Facades\Datatables;
 use App\Senhas;
 use App\Acesso;
 use App\User;
+use App\Notificacao;
 
 class SenhasController extends Controller {
 
@@ -24,7 +24,9 @@ class SenhasController extends Controller {
 
         $senhas = $senha->senhasLst();
 
-        return view('senhas.ViewIndex', compact('senhas'));
+        $notificacaoLst = Notificacao::notificacaoLst();
+
+        return view('senhas.ViewIndex', compact('senhas', 'notificacaoLst'));
     }
 
     public function addForm() {
@@ -34,8 +36,9 @@ class SenhasController extends Controller {
         $acessos = Acesso::pluck('acesso', 'id');
         $users = User::pluck('name', 'id');
 
+        $notificacaoLst = Notificacao::notificacaoLst();
 
-        return view('senhas.ViewAdd', compact('title', 'acessos', 'users'));
+        return view('senhas.ViewAdd', compact('title', 'acessos', 'users', 'notificacaoLst'));
     }
 
     public function editForm(Request $request) {
@@ -48,9 +51,9 @@ class SenhasController extends Controller {
         $acessos = Acesso::pluck('acesso', 'id');
         $users = User::pluck('name', 'id');
 
-//        \Session::flash('msg', 'Changes Saved.' );
+        $notificacaoLst = Notificacao::notificacaoLst();
 
-        return view('senhas.ViewEdit', compact('senhas', 'acessos', 'users'));
+        return view('senhas.ViewEdit', compact('senhas', 'acessos', 'users', 'notificacaoLst'));
     }
 
     public function delete(Request $request) {

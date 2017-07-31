@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Notificacao;
 
 class UserController extends Controller {
 
@@ -16,7 +17,10 @@ class UserController extends Controller {
 
         $usuariosLst = $usuarios->getUserLst();
 
-        return view('user.ViewIndex', compact('title', 'usuariosLst'));
+        $notificacaoLst = Notificacao::notificacaoLst();
+
+
+        return view('user.ViewIndex', compact('title', 'usuariosLst', 'notificacaoLst'));
     }
 
     public function addForm() {
@@ -27,7 +31,7 @@ class UserController extends Controller {
 
 
 
-
+        $notificacaoLst = Notificacao::notificacaoLst();
         return view('user.ViewAdd', compact('title'));
     }
 
@@ -38,7 +42,7 @@ class UserController extends Controller {
 
         $usuario = $usuarios->userID($request->id);
 
-        return view('user.ViewEditPassword', compact('usuario', 'title'));
+        return view('user.ViewEditPassword', compact('usuario', 'title', 'notificacaoLst'));
     }
 
     public function editForm(Request $request) {
@@ -52,13 +56,9 @@ class UserController extends Controller {
         $tipo = array(1 => 'Administrador', 2 => 'usuário');
         $ativado = array('S' => 'Sim', 'N' => 'Não');
 
-//        print "<pre>";
-//        print_r($usuario);
-//        die();
-//        $acessos = Acesso::pluck('nomeacesso', 'id');
-//        \Session::flash('msg', 'Changes Saved.' );
+        $notificacaoLst = Notificacao::notificacaoLst();
 
-        return view('user.ViewEdit', compact('usuario', 'title', 'tipo', 'ativado'));
+        return view('user.ViewEdit', compact('usuario', 'title', 'tipo', 'ativado', 'notificacaoLst'));
     }
 
     public function envia(Request $request) {
