@@ -70,11 +70,16 @@ class SenhasController extends Controller {
 
         $send = $senha->sendData($request);
 
+        $notification = array(
+            'message' => 'I am a successful message!',
+            'alert-type' => 'success'
+        );
+
         if (isset($request->id)) {
-//            return redirect()->route('senha')->with('info', 'Senha editada com sucesso');
-            return response()->json($send);
+            return redirect()->route('senha')->with($notification);
+//            return response()->json($send);
         } else {
-            return response()->json($send);
+            return redirect()->route('senha')->with('success', 'Senha adicionada');
         }
     }
 

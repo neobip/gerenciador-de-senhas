@@ -16,16 +16,16 @@
                 <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-messages">
-                @foreach($notificacaoLst as $notificacao)
+                @foreach($notificacaoLst as $key => $notificacao)
                 <li>
                     <a href="#">
                         <div>
-                            <strong>{{$notificacao->titulo}}</strong>
+                            <strong>{{$notificacao['Title']}}</strong>
                             <span class="pull-right text-muted">
-                                <em>{{$notificacao->created_at}}</em>
+                                <em>{{$notificacao['Data']}}</em>
                             </span>
                         </div>
-                        <div>{{$notificacao->notificacao}}</div>
+                        <div>{{$notificacao['Notificacao']}}</div>
                     </a>
                 </li>
                 @endforeach

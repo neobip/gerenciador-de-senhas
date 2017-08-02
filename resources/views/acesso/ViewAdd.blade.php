@@ -12,6 +12,7 @@
     {!! Form::text('link', null, array('required', 'class'=>'form-control', 'placeholder'=>'Digite uma descrição do acesso')) !!}
 </div>
 
+
 {{ Form::close() }}
 
 <div class="deleteContent">

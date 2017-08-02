@@ -1,6 +1,7 @@
 
 $(document).ready(function () {
-    $('[data-toggle="modal"]').click(function (e) {
+//    $('[data-toggle="modal"]').click(function (e) {
+    $('body').on('click', '[data-toggle="modal"]', function (e) {
 
         e.preventDefault();
         var url = $(this).attr('href');
@@ -9,7 +10,7 @@ $(document).ready(function () {
         var data_target = $(this).attr('data-target');
         var name = $(this).attr('name');
         var dataName = $(this).attr('data-name');
-
+//alert(dataID);
         data: url;
 
         if (url.indexOf('#') == 0) {
@@ -18,7 +19,7 @@ $(document).ready(function () {
         } else {
 
             $.get(url, function (data) {
-                var divModal = $('<div class="modal fade" id="' + dataID + '" data-backdrop="static"  >' +
+                var divModal = $('<div class="modal fade in" id="' + dataID + '" data-backdrop="static"  >' +
                         '<div class="modal-dialog" >' +
                         '<div class="modal-content">' +
                         '<div class="modal-header">' +
@@ -48,7 +49,6 @@ function action(datan, name, id0t, target) {
 
     var end = "http://127.0.0.1/gerenciador_senhas/public/" + target + "/envia";
     var caller = $(this);
-
     switch (datan) {
 
         case 'edit-modal':
@@ -62,30 +62,32 @@ function action(datan, name, id0t, target) {
             $('.deleteContent').hide();
             $('.modal-title').text('Editar ' + name);
 
-            $(document).ready(function () {
+//            $(document).ready(function () {
 
                 $('.modal-footer').on('click', '.edit', function () {
 //                    e.preventDefault();
 //                    alert(caller);
                     $.ajax({
-//                        dataType: 'json',
+                        dataType: 'json',
                         type: 'post',
                         url: end,
                         data: $("form").serialize(),
-                        success: function (data) {
-//                            alert(data);
+                        success: function (response) {
+                            console.log(response);
+//                            alert(response);
                             toastr.info('Atualizado ' + name, 'Atualizado', {
                                 showDuration: 1000,
                                 timeOut: 5000
 
                             });
-                            setTimeout('window.location.reload(true)', 2000);
-
+//                            setTimeout('window.location.reload(true)', 2000);
+                            $("#"+response.idGrid).DataTable().ajax.reload();
+//                            table.url.reload();
                         }
                     });
                 });
 
-            });
+//            });
 
             break;
 

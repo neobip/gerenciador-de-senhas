@@ -57,9 +57,9 @@
                 <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
                     {{ csrf_field() }}
 
-                    @if ($errors->has('email'))
+                    @if ($errors->has('username'))
                     <div class="alert alert-danger">
-                        <a class="close" data-dismiss="alert" href="#">×</a><strong>{{ $errors->first('email') }}</strong>
+                        <a class="close" data-dismiss="alert" href="#">×</a><strong>{{ $errors->first('username') }}</strong>
                     </div>
                     @endif
 
@@ -78,14 +78,14 @@
 
                     <div style="margin-bottom: 12px" class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Digite seu e-mail" required autofocus>
-
-
+                        <input id="email" type="text" class="form-control" name="username" value="{{ old('username') }}" placeholder="Digite seu login" required autofocus>
+                        <span class="input-group-addon">@uneworld.com.br</span>
                     </div>
 
                     <div style="margin-bottom: 12px" class="input-group{{ $errors->has('password') ? ' has-error' : '' }}">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         <input id="password" type="password" class="form-control" placeholder="Digite sua senha" name="password" required>
+
                     </div>
 
                     <div class="input-group"  style='display: none'>

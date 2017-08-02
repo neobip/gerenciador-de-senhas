@@ -113,8 +113,8 @@ class Senhas extends Model {
 
 
            return $update = $senhas->update([
-                'login' => Crypt::encryptString($request->login),
-                'pwd' => Crypt::encryptString($request->pwd),
+                'login' => $request->login,
+                'pwd' => $request->pwd,
                 'obs' => $request->obs,
                 'id' => $request->id,
                 'global' => $request->global,
@@ -126,9 +126,9 @@ class Senhas extends Model {
         } else {
 
             return $insert = $this->create([
-                'login' => Crypt::encryptString($request->login),
-                'pwd' => Crypt::encryptString($request->pwd),
-                'obs' => Crypt::encryptString($request->obs),
+                'login' => $request->login,
+                'pwd' => $request->pwd,
+                'obs' => $request->obs,
                 'id' => $request->id,
                 'global' => $request->global,
                 'visualiza' => $request->visualiza,

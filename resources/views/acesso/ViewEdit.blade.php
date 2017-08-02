@@ -15,6 +15,7 @@
 </div>
 
 
+
 {{ Form::close() }}
 
 <div class="deleteContent">

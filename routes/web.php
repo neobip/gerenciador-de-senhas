@@ -24,7 +24,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/senhas/index', 'SenhasController@index');
 Route::get('/senhas/add', 'SenhasController@addForm');
-Route::get('/senhas/edit', 'SenhasController@editForm');
+Route::get('/senhas/edit', 'SenhasController@editForm')->name('editSenha');
 Route::post('/senhas/envia', 'SenhasController@envia');
 Route::post('/senhas/delete', 'SenhasController@delete');
 Route::get('senhas/index', 'SenhasController@index')->name('senha');
@@ -33,9 +33,10 @@ Route::get('senhas/index', 'SenhasController@index')->name('senha');
 Route::get('/acessos/index', 'AcessoController@index');
 //Route::get('acessos/get_datatable', 'AcessoController@get_datatable');
 Route::get('/acessos/add', 'AcessoController@addForm');
-Route::get('/acessos/edit', 'AcessoController@editForm');
+Route::get('/acessos/edit', 'AcessoController@editForm')->name('editAcesso');
 Route::post('/acessos/envia', 'AcessoController@envia');
 Route::get('acessos/index', 'AcessoController@index')->name('acesso');
+Route::get('acessos/gridAcessosload', 'AcessoController@gridAcessosload')->name('gridAcessos');
 
 Route::get('/usuarios/index', 'UserController@index');
 Route::get('/usuarios/add', 'UserController@addForm');

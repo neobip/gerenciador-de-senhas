@@ -11,6 +11,7 @@ class AcessoController extends Controller {
 
     public function __construct() {
         $this->middleware('auth');
+        $this->idGrid = 'gridAcessos';
     }
 
     public function index() {
@@ -19,10 +20,22 @@ class AcessoController extends Controller {
 //
         $acessos = $acesso->acessosLst();
 
-        
+
         $notificacaoLst = Notificacao::notificacaoLst();
 
-        return view('acesso.ViewIndex', compact('acessos', 'notificacaoLst'));
+        $grid['id'] = $this->idGrid;
+        $grid['colunas'] = array('acesso', 'link');
+        Session::put($this->idGrid, $grid);
+        $htmlGrid = view('layouts.datatables', compact('grid'));
+        
+        $grid['id'] = $this->idGrid;
+        $grid['colunas'] = array('acesso', 'link');
+        Session::put($this->idGrid, $grid);
+        $htmlGrid1 = view('layouts.datatables', compact('grid'));
+        
+//       return $htmlGrid;
+
+        echo view('acesso.ViewIndex', compact('acessos', 'notificacaoLst', 'htmlGrid', 'htmlGrid1'));
 //        return view('acesso.ViewIndex');
     }
 
@@ -55,10 +68,41 @@ class AcessoController extends Controller {
         $send = $acesso->sendData($request);
 
         if ($request->id <> 0) {
-            response()->json($send);
+            return response()->json(array('idGrid'=>$this->idGrid));
         } else {
             return redirect()->route('acesso')->with('success', 'Acesso cadastrado com sucesso!');
         }
+    }
+
+    public function gridacessosload() {
+//                return Datatables::eloquent(Acesso::query())->make(true);
+
+        $acesso = new Acesso();
+//
+        $acessos = $acesso->acessosLst();
+
+        $array = Session::get($this->idGrid);
+
+        foreach ($acessos as $key => $value) {
+//           $item = $value[$key]
+            foreach ($array['colunas'] as $key1 => $value1) {
+                $item[] = $value[$value1];
+            }
+
+            $item[] = '<a href="'.route('editAcesso').'?id='.$value['id'].'" class="btn btn-info edit-modal" data-toggle="modal"
+                                                    data-name="edit-modal"
+                                                    data-target="acessos"
+                                                    name="'.$value['acesso'].'"
+                                                    data-id="'.$value['id'].'"><i class="fa fa-pencil"></i> Editar</a>';
+            $lst[] = $item;
+            unset($item);
+        }
+        $data['data'] = $lst;
+//        print "<pre>";
+//        print_r(json_encode($data));
+//        die();
+
+        echo json_encode($data);
     }
 
 //
