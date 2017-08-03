@@ -22,20 +22,12 @@ class Acesso extends Model {
         return $this->hasMany('App\Senhas', 'Senhas.id');
     }
 
-    public function acessosLst() {
+    public static function acessosLst() {
 
-        $acessos = $this->all();
+        $acessos = Acesso::all();
 
         return $acessos;
     }
-
-//    public function getAcessoName($id) {
-//       $acesso = $this->find($id);
-//       
-//       for($i=0;$i<count($acesso);$i++){
-//           return $acesso[$i]['nomeacesso'];
-//       }
-//    }
     
     public function acessoID($id) {
         return $this->find($id);

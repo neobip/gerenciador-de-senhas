@@ -6,7 +6,6 @@ $(document).ready(function () {
         e.preventDefault();
         var url = $(this).attr('href');
         var dataID = $(this).attr('data-id');
-        var id = $(this).attr('id');
         var data_target = $(this).attr('data-target');
         var name = $(this).attr('name');
         var dataName = $(this).attr('data-name');

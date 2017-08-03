@@ -6,41 +6,29 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Acesso;
 use App\Notificacao;
+use App\Libs\Grid;
+use App\Libs\Button;
 
 class AcessoController extends Controller {
 
     public function __construct() {
         $this->middleware('auth');
         $this->idGrid = 'gridAcessos';
+        $this->notificacao = Notificacao::notificacaoLst();
+        $this->title = 'Acessos';
     }
 
     public function index() {
+        $grid = new Grid($this->idGrid);
+        $grid->gridColumns = array('acesso', 'link');
+        $grid->addButton('editAcesso', 'info');
 
-        $acesso = new Acesso();
-//
-        $acessos = $acesso->acessosLst();
+        $htmlGrid = $grid->createGrid();
+        $notificacaoLst = $this->notificacao;
 
+        $title = $this->title;
 
-        $notificacaoLst = Notificacao::notificacaoLst();
-
-        $grid['id'] = $this->idGrid;
-        $grid['colunas'] = array('acesso', 'link');
-        Session::put($this->idGrid, $grid);
-        $htmlGrid = view('layouts.datatables', compact('grid'));
-        
-        $grid['id'] = $this->idGrid;
-        $grid['colunas'] = array('acesso', 'link');
-        Session::put($this->idGrid, $grid);
-        $htmlGrid1 = view('layouts.datatables', compact('grid'));
-        
-//       return $htmlGrid;
-
-        echo view('acesso.ViewIndex', compact('acessos', 'notificacaoLst', 'htmlGrid', 'htmlGrid1'));
-//        return view('acesso.ViewIndex');
-    }
-
-    public function get_datatable() {
-        return Datatables::eloquent(Acesso::query())->make(true);
+        echo view('acesso.ViewIndex', compact('notificacaoLst', 'htmlGrid'));
     }
 
     public function addForm() {
@@ -68,41 +56,16 @@ class AcessoController extends Controller {
         $send = $acesso->sendData($request);
 
         if ($request->id <> 0) {
-            return response()->json(array('idGrid'=>$this->idGrid));
+            return response()->json(array('idGrid' => $this->idGrid));
         } else {
             return redirect()->route('acesso')->with('success', 'Acesso cadastrado com sucesso!');
         }
     }
 
     public function gridacessosload() {
-//                return Datatables::eloquent(Acesso::query())->make(true);
+        $acessosLst = Acesso::acessosLst();
 
-        $acesso = new Acesso();
-//
-        $acessos = $acesso->acessosLst();
-
-        $array = Session::get($this->idGrid);
-
-        foreach ($acessos as $key => $value) {
-//           $item = $value[$key]
-            foreach ($array['colunas'] as $key1 => $value1) {
-                $item[] = $value[$value1];
-            }
-
-            $item[] = '<a href="'.route('editAcesso').'?id='.$value['id'].'" class="btn btn-info edit-modal" data-toggle="modal"
-                                                    data-name="edit-modal"
-                                                    data-target="acessos"
-                                                    name="'.$value['acesso'].'"
-                                                    data-id="'.$value['id'].'"><i class="fa fa-pencil"></i> Editar</a>';
-            $lst[] = $item;
-            unset($item);
-        }
-        $data['data'] = $lst;
-//        print "<pre>";
-//        print_r(json_encode($data));
-//        die();
-
-        echo json_encode($data);
+        Grid::jsonGrid($acessosLst, $this->idGrid);
     }
 
 //

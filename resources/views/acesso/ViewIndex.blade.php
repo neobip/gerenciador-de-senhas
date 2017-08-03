@@ -3,6 +3,5 @@
 @section('content')
 
 {!! $htmlGrid !!}
-{!! $htmlGrid1 !!}
 
 @endsection
