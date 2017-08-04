@@ -32,8 +32,9 @@ Route::get('senhas/index', 'SenhasController@index')->name('senha');
 
 Route::get('/acessos/index', 'AcessoController@index');
 //Route::get('acessos/get_datatable', 'AcessoController@get_datatable');
-Route::get('/acessos/add', 'AcessoController@addForm');
-Route::get('/acessos/edit', 'AcessoController@editForm')->name('editAcesso');
+Route::get('/acessos/add', 'AcessoController@addForm')->name('add');
+Route::get('acessos/edit', 'AcessoController@editForm')->name('edit');
+Route::get('/acessos/delete', 'AcessoController@delete')->name('del');
 Route::post('/acessos/envia', 'AcessoController@envia');
 Route::get('acessos/index', 'AcessoController@index')->name('acesso');
 Route::get('acessos/gridAcessosload', 'AcessoController@gridAcessosload')->name('gridAcessos');

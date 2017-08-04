@@ -15,26 +15,32 @@
 namespace App\Libs;
 
 class Button {
-    
-    public $route = "#none";
-    public $type = 'default';
 
-   public function createButton($dataID){
-       
-//       return 'oi';
-              
-       
-      $button = '<a href="' . route($this->route) . '?id=' . $this->dataId . '" class="btn btn-'.$this->type.'" data-toggle="modal"
+    public $route = "add";
+    public $type = 'default';
+    public $dataParamsLst;
+
+    public function createButton($dataID = NULL) {
+
+        if (isset($dataID)) {
+            $button = '<a href="' . route($this->route) . '?id=' . $dataID . '" class="btn btn-' . $this->type . '" data-toggle="modal"
                                                     data-name="edit-modal"
                                                     data-target="categorias"
                                                     name="acesso"
-                                                    data-id="' . $this->dataId . '"><i class="fa fa-pencil"></i> </a>';
-      
-      return $button;
-   }
-   
-   public function modalButton($dataID){
-       
-   }
+                                                    data-id="' . $dataID . '"><i id="icon" class="fa fa-pencil"></i> </a>';
+        } else {
+            $button = '<a href="' . route($this->route) . '" class="btn btn-' . $this->type . '" data-toggle="modal"
+                                                    data-name="add-modal"
+                                                    data-target="categorias"
+                                                    name="acesso"
+                                                    data-id=""><i id="icon" class="fa fa-plus"></i> Adicionar</a>';
+        }
+
+        return $button;
+    }
+
+    public function modalButton($dataID) {
+        
+    }
 
 }

@@ -23,6 +23,7 @@ class Grid {
     public $gridColumns;
     public $dataLst;
     public $buttonLst;
+    public $titleGrid;
 
     public function __construct($idGrid) {
         $this->idGrid = $idGrid;
@@ -30,40 +31,40 @@ class Grid {
 
     public function createGrid() {
 
+        $button = new Button();
 
         Session::put($this->idGrid, $this);
         $grid = $this;
-        
-        $htmlGrid = view('layouts.ViewDatatables', compact('grid'));
+
+        $title = $this->titleGrid;
+
+        $htmlGrid = view('layouts.ViewDatatables', compact('grid', 'title'));
 
         return $htmlGrid;
     }
 
     public static function jsonGrid($lst, $idGrid) {
 
-        
         $grid = Session::get($idGrid);
 
         foreach ($lst as $key => $item) {
 
+            $linha = array();
             foreach ($grid->gridColumns as $coluna) {
                 $linha[] = $item[$coluna];
             }
-//
-//            $button = new Button();
-//            $button->dataId = $value['id'];
-            
+
+            $buttons = '';
             foreach ($grid->buttonLst as $button) {
-                $buttons = $button->createButton();
-                
+                $buttons .= $button->createButton($item['id']);
             }
 
 
             $linha[] = $buttons;
 
+
             $dataLst[] = $linha;
 
-            unset($linha);
         }
 
 

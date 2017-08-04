@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+
 use App\Acesso;
 use App\Notificacao;
 use App\Libs\Grid;
@@ -21,14 +22,22 @@ class AcessoController extends Controller {
     public function index() {
         $grid = new Grid($this->idGrid);
         $grid->gridColumns = array('acesso', 'link');
-        $grid->addButton('editAcesso', 'info');
+        $grid->titleGrid = $this->title;
+        $grid->addButton('edit', 'info');
+        $grid->addButton('del', 'danger');
+
+        $btn = new Button();
+        $btn->route = 'add';
+        $btn->type = 'success';
+
+        $btnAdd = $btn->createButton(NULL);
 
         $htmlGrid = $grid->createGrid();
-        $notificacaoLst = $this->notificacao;
-
         $title = $this->title;
 
-        echo view('acesso.ViewIndex', compact('notificacaoLst', 'htmlGrid'));
+        $notificacaoLst = $this->notificacao;
+
+        echo view('acesso.ViewIndex', compact('notificacaoLst', 'htmlGrid', 'title', 'btnAdd'));
     }
 
     public function addForm() {
@@ -44,9 +53,11 @@ class AcessoController extends Controller {
 
         $acessos = $acesso->acessoID($request->id);
 
-
-
         return view('acesso.ViewEdit', compact('acessos'));
+    }
+
+    public function delete(Request $request) {
+        
     }
 
     public function envia(Request $request) {

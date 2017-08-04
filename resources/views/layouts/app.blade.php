@@ -11,41 +11,37 @@
         <title>Gerenciador Uneworld</title>
 
         <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/morrisjs/morris.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/metisMenu/metisMenu.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/principal.css') }}" rel="stylesheet">
 
-        <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
-
-
-        <link href="{{ asset('css/font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/toastr.min.css') }}" rel="stylesheet">
-
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
     </head>
     <body>
+        <div>
+            <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/morrisjs/morris.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/metisMenu/metisMenu.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/principal.css') }}" rel="stylesheet">
+
+            <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
+
+
+            <link href="{{ asset('css/font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/toastr.min.css') }}" rel="stylesheet">
+        </div>
         <div id="wrapper">
             @if (!Auth::guest())
-                @include('navbar')
+            @include('navbar')
             @endif
 
 
             @yield('content')
         </div>
 
-        <!-- Scripts -->
-        <!--<script src="{{ asset('js/app.js') }}"></script>-->
-        <script src="{{ asset('js/jquery.min.js') }}"></script>
-        <!--<script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>-->
         <script src="{{ asset('js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('js/metisMenu/metisMenu.min.js') }}"></script>
         <script src="{{ asset('js/morrisjs/morris.min.js') }}"></script>
         <script src="{{ asset('js/sb-admin-2.js') }}"></script>
         <script src="{{ asset('js/select2.min.js') }}"></script>
-<!--        <script src="{{ asset('js/datatables.min.js') }}"></script>-->
 
-        <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
-        <script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
         <script src="{{ asset('js/modal.js') }}"></script>
 
 
