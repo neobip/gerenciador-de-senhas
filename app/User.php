@@ -35,8 +35,11 @@ class User extends Authenticatable {
         return $this->hasMany('App\Senhas', 'Senhas.id');
     }
 
-    public function getUserLst() {
-        return $this->all();
+    public static function usuariosLst() {
+
+        $usuarios = User::all();
+
+        return $usuarios;
     }
 
     public function userID($id) {
@@ -57,18 +60,18 @@ class User extends Authenticatable {
 
     public function saveLastLogin() {
         $usuarios = User::userID($this->getUserID());
-        
+
 //        print "<pre>";
 //        print_r($usuarios);
 //        die();
-        
+
         return $update = $usuarios->update([
             'lastlogin_at' => date('Y-m-d H:i:s'),
             'iplastlogin' => $_SERVER["REMOTE_ADDR"]
         ]);
     }
 
-    public function sendData($request) {
+    public static function sendData($request) {
         $usuarios = User::userID($request->id);
         $password = $request->password;
 

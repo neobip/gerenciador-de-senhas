@@ -2,14 +2,12 @@
 $(document).ready(function () {
 //    $('[data-toggle="modal"]').click(function (e) {
     $('body').on('click', '[data-toggle="modal"]', function (e) {
-
         e.preventDefault();
         var url = $(this).attr('href');
         var dataID = $(this).attr('data-id');
-        var data_target = $(this).attr('data-target');
         var name = $(this).attr('name');
-        var dataName = $(this).attr('data-name');
-//alert(dataID);
+        var id = $(this).attr('id');
+//        alert('oi');
         data: url;
 
         if (url.indexOf('#') == 0) {
@@ -18,12 +16,12 @@ $(document).ready(function () {
         } else {
 
             $.get(url, function (data) {
-                var divModal = $('<div class="modal fade in" id="' + dataID + '" data-backdrop="static"  >' +
-                        '<div class="modal-dialog" >' +
+                var divModal = $('<div class="modal fade" id="' + dataID + '" data-backdrop="static"  >' +
+                        '<div class="modal-dialog modal-lg" >' +
                         '<div class="modal-content">' +
-                        '<div class="modal-header">' +
+                        '<div class="modal-header ">' +
                         '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
-                        '<h4 class="modal-title"></h4>' +
+                        '<h3 class="modal-title"><span id="icon" class="icone(data_target)"></span> </h3>' +
                         '</div>' +
                         '<div class="modal-body">' +
                         data +
@@ -32,7 +30,7 @@ $(document).ready(function () {
                 $('body').append(divModal);
 
 
-                action(dataName, name, dataID, data_target);
+                action(id, name);
 
                 $('#' + dataID).modal();
 
@@ -43,29 +41,32 @@ $(document).ready(function () {
 });
 
 
-function action(datan, name, id0t, target) {
+function action(id, name) {
 
+    var base_url = window.location.origin;
+    
+    var end = base_url + '/gerenciador-de-senhas/public/' + name + "/envia";
 
-    var end = "http://127.0.0.1/gerenciador_senhas/public/" + target + "/envia";
-    var caller = $(this);
-    switch (datan) {
+    switch (id) {
 
-        case 'edit-modal':
-            $('#footer_action_button').text("Atualizar");
-            $('#footer_action_button').addClass('fa fa-pencil-square-o');
+        case 'edit':
+            $('#footer_action_button').text(" Atualizar");
+            $('#footer_action_button').addClass('fa fa-floppy-o ');
             $('#footer_action_button').removeClass('glyphicon-trash');
             $('.actionBtn').addClass('btn-success');
             $('.actionBtn').removeClass('btn-danger');
             $('.actionBtn').addClass('edit');
             $('.form-horizontal').show();
             $('.deleteContent').hide();
-            $('.modal-title').text('Editar ' + name);
+            $('.modal-title').text('Edição');
+            $('.modal-header').addClass('modal-header-primary');
 
-//            $(document).ready(function () {
+
+            $(document).ready(function () {
 
                 $('.modal-footer').on('click', '.edit', function () {
 //                    e.preventDefault();
-//                    alert(caller);
+////                    alert(caller);
                     $.ajax({
                         dataType: 'json',
                         type: 'post',
@@ -74,43 +75,52 @@ function action(datan, name, id0t, target) {
                         success: function (response) {
                             console.log(response);
 //                            alert(response);
-                            toastr.info('Atualizado ' + name, 'Atualizado', {
+                            toastr.info('Registro atualizado', '', {
                                 showDuration: 1000,
                                 timeOut: 5000
 
                             });
 //                            setTimeout('window.location.reload(true)', 2000);
-                            $("#"+response.idGrid).DataTable().ajax.reload();
-//                            table.url.reload();
+                            $("#" + response.idGrid).DataTable().ajax.reload();
                         }
                     });
                 });
 
-//            });
+            });
 
             break;
 
-        case 'delete-modal':
+        case 'del':
             $('#footer_action_button').text(" Confirmar");
             $('#footer_action_button').removeClass('glyphicon-check');
             $('#footer_action_button').addClass('fa fa-trash');
             $('.actionBtn').removeClass('btn-success');
             $('.actionBtn').addClass('btn-danger');
-            $('.actionBtn').addClass('delete');
-            $('.modal-title').text('Deseja deletar ' + name + '?');
+            $('.actionBtn').addClass('del');
+            $('.modal-title').text('Deletar');
             $('.deleteContent').show();
             $('.form-horizontal').hide();
             $('#modal-dialog').modal('show');
+            $('.modal-header').addClass('modal-header-danger');
 
-            $('.modal-footer').on('click', '.delete', function () {
+
+            $('.modal-footer').on('click', '.del', function () {
 
                 $.ajax({
-                    type: 'post',
-                    url: end,
+                    dataType: 'json',
+                    type: 'get',
+                    url: base_url + '/gerenciador-de-senhas/public/' + name + "/del",
                     data: $("form").serialize(),
-                    success: function (data) {
-                        toastr.success('Registro ' + name + ' removido.', 'Deletado', {timeOut: 5000});
-//                        $('.item' + $('.did').text()).remove();
+                    success: function (response) {
+                        console.log(response);
+
+                        toastr.success('Registro removido', '', {
+                            showDuration: 1000,
+                            timeOut: 5000
+
+                        });
+
+                        $("#" + response.idGrid).DataTable().ajax.reload();
                     }
                 });
             });
@@ -121,25 +131,30 @@ function action(datan, name, id0t, target) {
             $('#footer_action_button').removeClass('glyphicon-check');
             $('#footer_action_button').addClass('fa fa-plus');
             $('.actionBtn').removeClass('btn-success');
+            $('#icon').addClass('fa fa-plus');
             $('.actionBtn').addClass('btn-success');
             $('.actionBtn').removeClass('btn-danger');
-            $('.actionBtn').addClass('edit');
+            $('.actionBtn').addClass('add');
             $('.form-horizontal').show();
-            $('.modal-title').text('Adicionar');
+            $('.modal-title').text('Cadastro');
+            $('.modal-header').addClass('modal-header-success');
 
-            $('.modal-footer').on('click', '.delete', function () {
 
+            $('.modal-footer').on('click', '.add', function () {
                 $.ajax({
                     type: 'post',
                     url: end,
                     data: $("form").serialize(),
-                    success: function (data) {
-                        toastr.info('Sucesso', 'Registro Adicionado', {
+                    success: function (response) {
+                        console.log(response);
+
+                        toastr.success('Registro Cadastrado', '', {
                             showDuration: 1000,
                             timeOut: 5000
 
                         });
-                        setTimeout('window.location.reload(true)', 2000);
+
+                        $("#" + response.idGrid).DataTable().ajax.reload();
 
                     }
                 });
@@ -154,4 +169,3 @@ function action(datan, name, id0t, target) {
 $('body').on('hidden.bs.modal', '.modal', function () {
     $(this).remove();
 });
-

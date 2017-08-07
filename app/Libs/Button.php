@@ -16,31 +16,31 @@ namespace App\Libs;
 
 class Button {
 
-    public $route = "add";
+    public $route;
     public $type = 'default';
+    public $icon;
+    public $title;
+    public $name;
+    public $toggle;
+    public $id;
+    
     public $dataParamsLst;
 
     public function createButton($dataID = NULL) {
-
+//data-animation="xxx" data-plugin="custommodal" data-overlaySpeed="xxx" data-overlayColor="#xxx"
         if (isset($dataID)) {
-            $button = '<a href="' . route($this->route) . '?id=' . $dataID . '" class="btn btn-' . $this->type . '" data-toggle="modal"
-                                                    data-name="edit-modal"
-                                                    data-target="categorias"
-                                                    name="acesso"
-                                                    data-id="' . $dataID . '"><i id="icon" class="fa fa-pencil"></i> </a>';
+            $button = '<a href="' . route($this->route) . '?id=' . $dataID . '"  class="btn btn-' . $this->type . '" id="' . $this->id . '" 
+                                                    name="' . $this->name . '" 
+                                                    data-toggle="'.$this->toggle.'"
+                                                    data-id="' . $dataID . '" title="' . $this->title . '"><i id="' . $this->id . '" class="' . $this->icon . '" ></i> ' . $this->title . '</a>';
         } else {
-            $button = '<a href="' . route($this->route) . '" class="btn btn-' . $this->type . '" data-toggle="modal"
-                                                    data-name="add-modal"
-                                                    data-target="categorias"
-                                                    name="acesso"
-                                                    data-id=""><i id="icon" class="fa fa-plus"></i> Adicionar</a>';
+            $button = '<a href="' . route($this->route) . '" class="btn btn-' . $this->type . '" data-toggle="'.$this->toggle.'"
+                                                    id="add"
+                                                    name="' . $this->name . '"
+                                                    title="' . $this->title . '"><i id="' . $this->route . '" class="' . $this->icon . '" ></i> ' . $this->title . '</a>';
         }
 
         return $button;
-    }
-
-    public function modalButton($dataID) {
-        
     }
 
 }

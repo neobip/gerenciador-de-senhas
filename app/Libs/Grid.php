@@ -57,6 +57,7 @@ class Grid {
             $buttons = '';
             foreach ($grid->buttonLst as $button) {
                 $buttons .= $button->createButton($item['id']);
+                $buttons .= " ";
             }
 
 
@@ -64,7 +65,6 @@ class Grid {
 
 
             $dataLst[] = $linha;
-
         }
 
 
@@ -73,11 +73,16 @@ class Grid {
         echo json_encode($data);
     }
 
-    public function addButton($route, $type) {
+    public function addButton($route, $type, $title, $icon, $name, $toggle = NULL, $id) {
 
         $button = new Button();
         $button->route = $route;
         $button->type = $type;
+        $button->title = $title;
+        $button->icon = $icon;
+        $button->name = $name;
+        $button->toggle = $toggle;
+        $button->id = $id;
 
         $this->buttonLst[] = $button;
     }

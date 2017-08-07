@@ -29,11 +29,12 @@ class Acesso extends Model {
         return $acessos;
     }
     
-    public function acessoID($id) {
-        return $this->find($id);
+    public static function acessoID($id) {
+        return Acesso::find($id);
     }
 
-    public function sendData($request) {
+    public static function sendData($request) {
+        
 
         if (isset($request->id)) {
             $acessos = Acesso::acessoID($request->id);
@@ -48,7 +49,7 @@ class Acesso extends Model {
                 echo "Erro";
         } else {
 
-            $insert = $this->create([
+            $insert = Acesso::create([
 
                 'acesso' => $request->acesso,
                 'link' => $request->link,

@@ -58,8 +58,9 @@
                     <table width="100%" class="table " id="users-table">
                         <thead>
                             <tr>
+                                <th style='text-align: center'>#</th>
                                 <th style='text-align: center'>Acesso</th>
-                                <th style='text-align: center'>Usuário</th>
+                                <th style='text-align: center'>Responsável</th>
                                 <th style='text-align: center'>Login</th>
                                 <th style='text-align: center'>Senha</th>
                                 <th style='text-align: center'>Obs</th>
@@ -71,6 +72,7 @@
                             @foreach($senhas as $key => $senha)
                             <tr class="item{{$senha['ID']}}">
 
+                                <td style='text-align: center'>{{$senha['ID']}}</td>
                                 <td style='text-align: center'><a href="{{$senha['Link']}}" target='_blank'>{{ $senha['Acesso'] }}</a></td>
                                 <td style='text-align: center'>{{$senha['Usuario']}}</td>
                                 <td style='text-align: center' id='login'>{{$senha['Login']}}</td>

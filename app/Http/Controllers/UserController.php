@@ -5,22 +5,45 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Notificacao;
+use App\Libs\Grid;
+use App\Libs\Button;
+use App\Libs\Form;
+use App\Libs\Input;
 
 class UserController extends Controller {
 
-    //
+    public function __construct() {
+        $this->middleware('auth');
+        $this->idGrid = 'gridUsuarios';
+        $this->notificacao = Notificacao::notificacaoLst();
+        $this->title = 'Usuarios';
+    }
 
     public function index() {
-        $title = "Usuários";
+        $grid = new Grid($this->idGrid);
+        $grid->gridColumns = array('name', 'email');
+        $grid->titleGrid = $this->title;
+        $grid->addButton('edit', 'info', '', 'fa fa-pencil', 'usuarios', 'modal', 'edit');
+        $grid->addButton('edit', 'danger', '', 'fa fa-trash', 'usuarios', 'modal', 'del');
 
-        $usuarios = new User();
+        $btn = new Button();
+        $btn->route = 'add';
+        $btn->type = 'success';
+        $btn->title = 'Adicionar';
+        $btn->icon = 'fa fa-plus';
+        $btn->name = 'usuarios';
+        $btn->toggle = 'modal';
+        $btn->id = 'add';
 
-        $usuariosLst = $usuarios->getUserLst();
+        $btnAdd = $btn->createButton(NULL);
 
-        $notificacaoLst = Notificacao::notificacaoLst();
+        $htmlGrid = $grid->createGrid();
 
+        $title = $this->title;
 
-        return view('user.ViewIndex', compact('title', 'usuariosLst', 'notificacaoLst'));
+        $notificacaoLst = $this->notificacao;
+
+        echo view('user.ViewIndex', compact('notificacaoLst', 'htmlGrid', 'title', 'btnAdd'));
     }
 
     public function addForm() {
@@ -63,18 +86,15 @@ class UserController extends Controller {
 
     public function envia(Request $request) {
 
+        User::sendData($request);
 
-        $usuario = new User();
+        return response()->json(array('idGrid' => $this->idGrid));
+    }
 
-//        $userID = new User();
+    public function gridusuariosload() {
+        $usuariosLst = User::usuariosLst();
 
-        $usuario->sendData($request);
-
-        if (isset($request->id)) {
-            return redirect()->route('usuario')->with('info', 'Usuário ' . $request->name . ' atualizado com sucesso');
-        } else {
-            return redirect()->route('usuario')->with('success', 'Usuário cadastrado com sucesso!');
-        }
+        Grid::jsonGrid($usuariosLst, $this->idGrid);
     }
 
 }

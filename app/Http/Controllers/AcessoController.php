@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-
 use App\Acesso;
 use App\Notificacao;
 use App\Libs\Grid;
 use App\Libs\Button;
+use App\Libs\Form;
+use App\Libs\Field;
 
 class AcessoController extends Controller {
 
@@ -23,12 +24,17 @@ class AcessoController extends Controller {
         $grid = new Grid($this->idGrid);
         $grid->gridColumns = array('acesso', 'link');
         $grid->titleGrid = $this->title;
-        $grid->addButton('edit', 'info');
-        $grid->addButton('del', 'danger');
+        $grid->addButton('edit', 'info', '', 'fa fa-pencil', 'acessos', 'modal', 'edit');
+        $grid->addButton('edit', 'danger', '', 'fa fa-trash', 'acessos', 'modal', 'del');
 
         $btn = new Button();
         $btn->route = 'add';
         $btn->type = 'success';
+        $btn->title = 'Adicionar';
+        $btn->icon = 'fa fa-plus';
+        $btn->name = 'acessos';
+        $btn->toggle = 'modal';
+        $btn->id = 'add';
 
         $btnAdd = $btn->createButton(NULL);
 
@@ -40,37 +46,59 @@ class AcessoController extends Controller {
         echo view('acesso.ViewIndex', compact('notificacaoLst', 'htmlGrid', 'title', 'btnAdd'));
     }
 
-    public function addForm() {
+    public function add() {
 
         $title = 'Cadastrar acesso';
 
-        return view('acesso.ViewAdd', compact('title'));
+        $form = new Form();
+        $form->route = 'envia';
+        $form->method = 'POST';
+
+        $field = new Input();
+        $input = $field->createInput('text', 'acesso', 'required', '');
+        $input .= $field->createInput('text', 'link', 'required', '');
+
+        $formulario = $form->createForm($input);
+
+        return view('acesso.ViewAdd', compact('title', 'formulario'));
     }
 
-    public function editForm(Request $request) {
+    public function edit(Request $request) {
 
-        $acesso = new Acesso();
+        $acessos = Acesso::acessoID($request->id);
 
-        $acessos = $acesso->acessoID($request->id);
+        $form = new Form();
+        $form->route = 'envia';
+        $form->method = 'POST';
+        $form->view = 'acesso.ViewEditAcessos';
 
-        return view('acesso.ViewEdit', compact('acessos'));
+        $field = new Field('hidden', 'id', '', 'required', $acessos->id);
+        $form->addField($field);
+
+        $field = new Field('text', 'acesso','Acesso', 'required', $acessos->acesso, 'Acesso');
+        $form->addField($field);
+
+        $field = new Field('text', 'link','Link', 'required', $acessos->link);
+        $form->addField($field);
+
+        $delTitle = 'Deseja deletar o acesso ' . $acessos->acesso . "?";
+
+        $formulario = $form->getHtml();
+
+        return view('acesso.ViewEdit', compact('acessos', 'formulario', 'delTitle'));
     }
 
-    public function delete(Request $request) {
-        
+    public function del(Request $request) {
+
+        Acesso::find($request->id)->delete();
+        return response()->json(array('idGrid' => $this->idGrid));
     }
 
     public function envia(Request $request) {
 
-        $acesso = new Acesso();
+        Acesso::sendData($request);
 
-        $send = $acesso->sendData($request);
-
-        if ($request->id <> 0) {
-            return response()->json(array('idGrid' => $this->idGrid));
-        } else {
-            return redirect()->route('acesso')->with('success', 'Acesso cadastrado com sucesso!');
-        }
+        return response()->json(array('idGrid' => $this->idGrid));
     }
 
     public function gridacessosload() {
@@ -79,5 +107,4 @@ class AcessoController extends Controller {
         Grid::jsonGrid($acessosLst, $this->idGrid);
     }
 
-//
 }

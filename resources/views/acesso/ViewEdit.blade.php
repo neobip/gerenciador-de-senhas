@@ -1,25 +1,7 @@
-{{ Form::open(array('url' => 'acessos/envia', 'method' => 'post')) }}
-{!! Form::hidden('id', $acessos->id) !!}
-
-<div class="form-group">
-
-    {!! Form::label('Acesso') !!}
-    {!! Form::text('acesso', $acessos->acesso, array('required', 'class'=>'form-control', 'placeholder'=>'Digite um login')) !!}
-
-</div>
-
-<div class="form-group">
-
-    {!! Form::label('Link') !!}
-    {!! Form::text('link', $acessos->link, array('required', 'class'=>'form-control', 'placeholder'=>'Digite uma acesso')) !!}
-</div>
-
-
-
-{{ Form::close() }}
+{!! $formulario !!}
 
 <div class="deleteContent">
-
+    <h3>{{ $delTitle }}</h3>
 </div>
 
 <div class="modal-footer">
