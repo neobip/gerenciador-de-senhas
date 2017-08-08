@@ -44,7 +44,7 @@ $(document).ready(function () {
 function action(id, name) {
 
     var base_url = window.location.origin;
-    
+
     var end = base_url + '/gerenciador-de-senhas/public/' + name + "/envia";
 
     switch (id) {
@@ -114,13 +114,24 @@ function action(id, name) {
                     success: function (response) {
                         console.log(response);
 
-                        toastr.success('Registro removido', '', {
-                            showDuration: 1000,
-                            timeOut: 5000
 
-                        });
 
-                        $("#" + response.idGrid).DataTable().ajax.reload();
+                        if (response.idGrid == 'Erro') {
+                            toastr.error('Motivos: Podem haver informações que utilizem este item.', 'Houve um erro ao deletar este item',  {
+                                showDuration: 1000,
+                                timeOut: 5000
+
+                            });
+                            $("#" + response.idGrid).DataTable().ajax.reload();
+                        } else {
+                            toastr.success('Registro removido', '', {
+                                showDuration: 1000,
+                                timeOut: 5000
+                            });
+                            $("#" + response.idGrid).DataTable().ajax.reload();
+
+
+                        }
                     }
                 });
             });

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use App\Acesso;
+use App\Senhas;
 use App\Notificacao;
 use App\Libs\Grid;
 use App\Libs\Button;
@@ -75,10 +75,10 @@ class AcessoController extends Controller {
         $field = new Field('hidden', 'id', '', 'required', $acessos->id);
         $form->addField($field);
 
-        $field = new Field('text', 'acesso','Acesso', 'required', $acessos->acesso, 'Acesso');
+        $field = new Field('text', 'acesso', 'Acesso', 'required', $acessos->acesso, 'Acesso');
         $form->addField($field);
 
-        $field = new Field('text', 'link','Link', 'required', $acessos->link);
+        $field = new Field('text', 'link', 'Link', 'required', $acessos->link);
         $form->addField($field);
 
         $delTitle = 'Deseja deletar o acesso ' . $acessos->acesso . "?";
@@ -90,8 +90,15 @@ class AcessoController extends Controller {
 
     public function del(Request $request) {
 
-        Acesso::find($request->id)->delete();
-        return response()->json(array('idGrid' => $this->idGrid));
+        $senhas = Senhas::getVerificaAcessoSenha($request->id);
+
+        if (count($senhas)>1) {
+            
+            return response()->json(array('idGrid'=>'Erro'));
+        } else { 
+            Acesso::find($request->id)->delete();
+            return response()->json(array('idGrid' => $this->idGrid));
+        }
     }
 
     public function envia(Request $request) {

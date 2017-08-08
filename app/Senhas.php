@@ -33,7 +33,7 @@ class Senhas extends Model {
         }
     }
 
-    public function senhasLst() {
+    public static function senhasLst() {
         $user = new User();
 
         if ($user->getUserTipo() == 1) {
@@ -41,8 +41,7 @@ class Senhas extends Model {
             $senhas = Senhas::with('acessos')->get();
         } else {
 
-            $senhas = $this
-                            ->where('user_id', $user->getUserID())
+            $senhas = Senhas::where('user_id', $user->getUserID())
                             ->orWhere(function ($query) {
                                 $query->where('global', 'S')
                                 ->where('visualiza', 'S');
@@ -67,6 +66,12 @@ class Senhas extends Model {
         }
 
         return $senhasLst;
+    }
+    
+    public static function getVerificaAcessoSenha($acesso){
+        $senhas = Senhas::where('acesso_id',  $acesso)->get();
+        
+        return $senhas;
     }
 
     public function senhaID($id) {

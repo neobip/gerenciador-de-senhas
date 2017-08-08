@@ -5,28 +5,48 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Senhas;
 use App\Acesso;
-use App\User;
 use App\Notificacao;
+use App\Libs\Grid;
+use App\Libs\Button;
+use App\Libs\Form;
+use App\Libs\Field;
 
 class SenhasController extends Controller {
 
     private $senhas;
 
-    public function __construct(Senhas $senhas) {
-        $this->senhas = $senhas;
+    public function __construct() {
+        $this->middleware('auth');
+        $this->idGrid = 'gridSenhas';
+        $this->notificacao = Notificacao::notificacaoLst();
+        $this->title = 'Senhas';
     }
 
     public function index() {
+        $title = $this->title;
 
-        $userID = new User();
+        $notificacaoLst = $this->notificacao;
 
-        $senha = new Senhas();
+        $grid = new Grid($this->idGrid);
+        $grid->gridColumns = array('Acesso', 'Usuario', 'Login', 'Senha', 'Observacao');
+        $grid->titleGrid = $this->title;
+        $grid->addButton('edit', 'info', '', 'fa fa-pencil', 'senhas', 'modal', 'edit');
+        $grid->addButton('edit', 'danger', '', 'fa fa-trash', 'senhas', 'modal', 'del');
 
-        $senhas = $senha->senhasLst();
+        $btn = new Button();
+        $btn->route = 'add';
+        $btn->type = 'success';
+        $btn->title = 'Adicionar';
+        $btn->icon = 'fa fa-plus';
+        $btn->name = 'senhas';
+        $btn->toggle = 'modal';
+        $btn->id = 'add';
 
-        $notificacaoLst = Notificacao::notificacaoLst();
+        $btnAdd = $btn->createButton(NULL);
 
-        return view('senhas.ViewIndex', compact('senhas', 'notificacaoLst'));
+        $htmlGrid = $grid->createGrid();
+
+        echo view('senhas.ViewIndex', compact('notificacaoLst', 'htmlGrid', 'title', 'btnAdd'));
     }
 
     public function addForm() {
@@ -81,6 +101,16 @@ class SenhasController extends Controller {
         } else {
             return redirect()->route('senha')->with('success', 'Senha adicionada');
         }
+    }
+
+    public function gridsenhasload() {
+        $senhasLst = Senhas::senhasLst();
+//        
+//        print "<pre>";
+//        print_r($senhasLst);
+//        die();
+
+        Grid::jsonGrid($senhasLst, $this->idGrid);
     }
 
 }

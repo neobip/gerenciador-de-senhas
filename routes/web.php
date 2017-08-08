@@ -22,12 +22,15 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+// ---  [START Routes Senhas] ---
 Route::get('/senhas/index', 'SenhasController@index');
 Route::get('/senhas/add', 'SenhasController@addForm');
 Route::get('/senhas/edit', 'SenhasController@editForm')->name('editSenha');
 Route::post('/senhas/envia', 'SenhasController@envia');
 Route::post('/senhas/delete', 'SenhasController@delete');
 Route::get('senhas/index', 'SenhasController@index')->name('senha');
+Route::get('senhas/gridSenhasload', 'SenhasController@gridSenhasload')->name('gridSenhas');
+// --- [END Routes Senhas] ---
 
 
 // --- [start route acessos] -- //
