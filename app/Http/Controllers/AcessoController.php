@@ -22,13 +22,16 @@ class AcessoController extends Controller {
 
     public function index() {
         $grid = new Grid($this->idGrid);
-        $grid->gridColumns = array('acesso', 'link');
+//        $grid->gridColumns = array('acesso', 'link');
         $grid->titleGrid = $this->title;
         $grid->addButton('edit', 'info', '', 'fa fa-pencil', 'acessos', 'modal', 'edit');
         $grid->addButton('edit', 'danger', '', 'fa fa-trash', 'acessos', 'modal', 'del');
+        
+        $grid->addColumn('Acesso', 'acesso');
+        $grid->addColumn('Link', 'link');
 
         $btn = new Button();
-        $btn->route = 'add';
+        $btn->route = 'addAcessos';
         $btn->type = 'success';
         $btn->title = 'Adicionar';
         $btn->icon = 'fa fa-plus';
@@ -50,15 +53,15 @@ class AcessoController extends Controller {
 
         $title = 'Cadastrar acesso';
 
-        $form = new Form();
-        $form->route = 'envia';
-        $form->method = 'POST';
+        $form = new Form('enviaAcessos', 'POST', 'acesso.ViewAddAcessos');
 
-        $field = new Input();
-        $input = $field->createInput('text', 'acesso', 'required', '');
-        $input .= $field->createInput('text', 'link', 'required', '');
+        $field = new Field('text', 'acesso', 'Acesso', 'required', '', '');
+        $form->addField($field);
 
-        $formulario = $form->createForm($input);
+        $field = new Field('text', 'link', 'Link', 'required', '');
+        $form->addField($field);
+
+        $formulario = $form->getHtml();
 
         return view('acesso.ViewAdd', compact('title', 'formulario'));
     }
@@ -67,10 +70,7 @@ class AcessoController extends Controller {
 
         $acessos = Acesso::acessoID($request->id);
 
-        $form = new Form();
-        $form->route = 'envia';
-        $form->method = 'POST';
-        $form->view = 'acesso.ViewEditAcessos';
+        $form = new Form('enviaAcessos', 'POST', 'acesso.ViewEditAcessos');
 
         $field = new Field('hidden', 'id', '', 'required', $acessos->id);
         $form->addField($field);
@@ -85,17 +85,17 @@ class AcessoController extends Controller {
 
         $formulario = $form->getHtml();
 
-        return view('acesso.ViewEdit', compact('acessos', 'formulario', 'delTitle'));
+        return view('layouts.ViewEdit', compact('acessos', 'formulario', 'delTitle'));
     }
 
     public function del(Request $request) {
 
         $senhas = Senhas::getVerificaAcessoSenha($request->id);
 
-        if (count($senhas)>1) {
-            
-            return response()->json(array('idGrid'=>'Erro'));
-        } else { 
+        if (count($senhas) > 1) {
+
+            return response()->json(array('idGrid' => 'Erro'));
+        } else {
             Acesso::find($request->id)->delete();
             return response()->json(array('idGrid' => $this->idGrid));
         }

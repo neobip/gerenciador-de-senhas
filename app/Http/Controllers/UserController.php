@@ -8,7 +8,7 @@ use App\Notificacao;
 use App\Libs\Grid;
 use App\Libs\Button;
 use App\Libs\Form;
-use App\Libs\Input;
+use App\Libs\Field;
 
 class UserController extends Controller {
 
@@ -61,9 +61,7 @@ class UserController extends Controller {
     public function editPasswordForm(Request $request) {
         $title = 'Mudar Senha';
 
-        $usuarios = new User();
-
-        $usuario = $usuarios->userID($request->id);
+        $usuario = User::userID($request->id);
 
         return view('user.ViewEditPassword', compact('usuario', 'title', 'notificacaoLst'));
     }
@@ -72,9 +70,7 @@ class UserController extends Controller {
 
         $title = 'Edição de usuário';
 
-        $usuarios = new User();
-
-        $usuario = $usuarios->userID($request->id);
+        $usuario = User::userID($request->id);
 
         $tipo = array(1 => 'Administrador', 2 => 'usuário');
         $ativado = array('S' => 'Sim', 'N' => 'Não');

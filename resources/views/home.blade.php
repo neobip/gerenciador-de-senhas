@@ -13,7 +13,7 @@
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-3 col-md-6">
-            <div class="panel panel-green effect2">
+            <div class="panel panel-green effect3">
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-3">
@@ -36,8 +36,12 @@
         </div>
 
 
-        @include('ViewNotification')
+       
 
+    </div>
+    
+    <div class="row">
+         @include('ViewNotification')
     </div>
     <!-- /.panel .chat-panel -->
 </div>

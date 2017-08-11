@@ -47,6 +47,8 @@
 
         <script src="{{ asset('js/toastr.min.js') }}"></script>
         <script src="{{ asset('js/principal.js') }}"></script>
+                <script src="{{ asset('Browser/control.js') }}"></script>
+
 
     </body>
 </html>

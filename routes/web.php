@@ -24,9 +24,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 // ---  [START Routes Senhas] ---
 Route::get('/senhas/index', 'SenhasController@index');
-Route::get('/senhas/add', 'SenhasController@addForm');
-Route::get('/senhas/edit', 'SenhasController@editForm')->name('editSenha');
-Route::post('/senhas/envia', 'SenhasController@envia');
+Route::get('/senhas/add', 'SenhasController@addForm')->name('addSenhas');
+Route::get('/senhas/edit', 'SenhasController@editForm')->name('editSenhas');
+Route::post('/senhas/envia', 'SenhasController@envia')->name('enviaSenhas');
 Route::post('/senhas/delete', 'SenhasController@delete');
 Route::get('senhas/index', 'SenhasController@index')->name('senha');
 Route::get('senhas/gridSenhasload', 'SenhasController@gridSenhasload')->name('gridSenhas');
@@ -34,15 +34,10 @@ Route::get('senhas/gridSenhasload', 'SenhasController@gridSenhasload')->name('gr
 
 
 // --- [start route acessos] -- //
-Route::get('/acessos/index', 'AcessoController@index');
-//Route::get('acessos/get_datatable', 'AcessoController@get_datatable');
-Route::get('/acessos/add', 'AcessoController@add')->name('add');
+Route::get('/acessos/add', 'AcessoController@add')->name('addAcessos');
 Route::get('acessos/edit', 'AcessoController@edit')->name('edit');
-//Route::get('acessos/editacessos', 'AcessoController@edit')->name('edit');
 Route::get('/acessos/del', 'AcessoController@del')->name('del');
-
-Route::post('/acessos/envia', 'AcessoController@envia')->name('envia');
-
+Route::post('/acessos/envia', 'AcessoController@envia')->name('enviaAcessos');
 Route::get('acessos/index', 'AcessoController@index')->name('acesso');
 Route::get('acessos/gridAcessosload', 'AcessoController@gridAcessosload')->name('gridAcessos');
 // --- [end route acessos] -- /

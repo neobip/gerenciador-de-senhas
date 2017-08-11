@@ -42,8 +42,8 @@ class User extends Authenticatable {
         return $usuarios;
     }
 
-    public function userID($id) {
-        return $this->find($id);
+    public static function userID($id) {
+        return User::find($id);
     }
 
     public function getUserID() {
@@ -53,8 +53,14 @@ class User extends Authenticatable {
     public function getNomeUser() {
         return Auth::user()->name;
     }
+    
+    public static function getUserById($id){
+        return User::where('id', '=', $id)->get();
+        
+        
+    }
 
-    public function getUserTipo() {
+    public static function getUserTipo() {
         return Auth::user()->tipo;
     }
 

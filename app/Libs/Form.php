@@ -21,17 +21,24 @@ class Form {
     public $view;
     public $fields;
 
+    public function __construct($route, $method, $view) {
+        $this->route = $route;
+        $this->method = $method;
+        $this->view = $view;
+    }
+
     public function getHtml() {
-        $form = "<form action=" . route($this->route) . " method='" . $this->method . "' class='form-horizontal' 'data-parsley-validate novalidate'>" . csrf_field() ;
-        
+        $form = "<form action=" . route($this->route) . " method='" . $this->method . "' class='form-horizontal' 'data-parsley-validate novalidate'>" . csrf_field();
+
         $fields = $this->fields;
 
         $form .= view($this->view, compact('fields'));
         $form .= "</form>";
         return $form;
     }
-    
-    public function addField($field){
+
+    public function addField($field) {
         $this->fields[$field->name] = $field;
     }
+
 }

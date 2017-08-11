@@ -16,6 +16,7 @@ namespace App\Libs;
 
 use Session;
 use App\Libs\Button;
+use App\Libs\Columns;
 
 class Grid {
 
@@ -32,6 +33,7 @@ class Grid {
     public function createGrid() {
 
         $button = new Button();
+//        $colmun = new Columns();
 
         Session::put($this->idGrid, $this);
         $grid = $this;
@@ -45,13 +47,19 @@ class Grid {
 
     public static function jsonGrid($lst, $idGrid) {
 
+
+
         $grid = Session::get($idGrid);
+
+
 
         foreach ($lst as $key => $item) {
 
             $linha = array();
             foreach ($grid->gridColumns as $coluna) {
-                $linha[] = $item[$coluna];
+
+                $linha[] = $item[$coluna->cdata];
+           
             }
 
             $buttons = '';
@@ -72,6 +80,12 @@ class Grid {
 
         echo json_encode($data);
     }
+    
+    public static function jsonSelect($lst){
+        print "<pre>";
+        print_r($lst);
+        die();
+    }
 
     public function addButton($route, $type, $title, $icon, $name, $toggle = NULL, $id) {
 
@@ -85,6 +99,13 @@ class Grid {
         $button->id = $id;
 
         $this->buttonLst[] = $button;
+    }
+
+    public function addColumn($chead, $cdata) {
+        $column = new Columns($chead, $cdata);
+
+
+        $this->gridColumns[] = $column;
     }
 
 }

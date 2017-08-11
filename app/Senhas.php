@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-//use Libs\Data;
 use App\User;
 use Illuminate\Support\Facades\Crypt;
 
@@ -34,60 +33,59 @@ class Senhas extends Model {
     }
 
     public static function senhasLst() {
-        $user = new User();
 
-        if ($user->getUserTipo() == 1) {
+        if (User::getUserTipo() == 1) {
 //            $senhas = $this->all();
             $senhas = Senhas::with('acessos')->get();
         } else {
 
-            $senhas = Senhas::where('user_id', $user->getUserID())
+            $senhas = Senhas::where('user_id', User::getUserTipo())
                             ->orWhere(function ($query) {
                                 $query->where('global', 'S')
                                 ->where('visualiza', 'S');
                             })->get();
         }
-
-        for ($i = 0; $i < count($senhas); $i++) {
-            $pwd['ID'] = $senhas[$i]['id'];
-            $pwd['UserID'] = $senhas[$i]['user_id'];
-            $pwd['Usuario'] = $senhas[$i]['Users']['name'];
-            $pwd['Acesso'] = $senhas[$i]['Acessos']['acesso'];
-            $pwd['Link'] = $senhas[$i]['Acessos']['link'];
-
-//            $pwd['Login'] = $this->trataCrypt($senhas[$i]['login']);
-//            $pwd['Senha'] = $this->trataCrypt($senhas[$i]['pwd']);
-//            $pwd['Observacao'] = $this->trataCrypt($senhas[$i]['obs']);
-            $pwd['Login'] = $senhas[$i]['login'];
-            $pwd['Senha'] = $senhas[$i]['pwd'];
-            $pwd['Observacao'] = $senhas[$i]['obs'];
-
-            $senhasLst[] = $pwd;
+        
+        foreach($senhas as $value){
+            
+            $senha['id'] = $value['id'];
+            
+            $senha['responsavel'] = $value['Users']['name'];
+            $senha['acessos'] = $value['Acessos']['acesso'];
+            $senha['login'] = $value['login'];
+            $senha['senha'] = $value['pwd'];
+            $senha['obs'] = $value['observacao'];
+            
+            $senhasLst[] = $senha;
         }
 
         return $senhasLst;
     }
-    
-    public static function getVerificaAcessoSenha($acesso){
-        $senhas = Senhas::where('acesso_id',  $acesso)->get();
-        
+
+    public static function getVerificaAcessoSenha($acesso) {
+        $senhas = Senhas::where('acesso_id', $acesso)->get();
+
         return $senhas;
     }
+    
+//    public static function getUser
 
-    public function senhaID($id) {
-        $senhaByID = $this->find($id);
-
-        $senha['ID'] = $senhaByID['id'];
-        $senha['Login'] = $this->trataCrypt($senhaByID['login']);
-        $senha['AcessoID'] = $senhaByID['acesso_id'];
-        $senha['Senha'] = $this->trataCrypt($senhaByID['pwd']);
-        $senha['Observacao'] = $this->trataCrypt($senhaByID['obs']);
-        $senha['Visualiza'] = $senhaByID['visualiza'];
-        $senha['Global'] = $senhaByID['global'];
-        $senha['UserID'] = $senhaByID['user_id'];
-
-        $senhaLst[] = $senha;
-
+    public static function senhaID($id) {
+//        $senhaByID = $this->find($id);
+//
+//        $senha['ID'] = $senhaByID['id'];
+//        $senha['Login'] = $this->trataCrypt($senhaByID['login']);
+//        $senha['AcessoID'] = $senhaByID['acesso_id'];
+//        $senha['Senha'] = $this->trataCrypt($senhaByID['pwd']);
+//        $senha['Observacao'] = $this->trataCrypt($senhaByID['obs']);
+//        $senha['Visualiza'] = $senhaByID['visualiza'];
+//        $senha['Global'] = $senhaByID['global'];
+//        $senha['UserID'] = $senhaByID['user_id'];
+//
+//        $senhaLst[] = $senha;
+        
+        
+ return Senhas::find($id);
 
 //        return $senhaLst;
         return $senha;
@@ -96,8 +94,8 @@ class Senhas extends Model {
     public function sendData($request) {
 
         $user = new User();
-        
-       
+
+
 
         if ($user->getUserTipo() == '2') {
             $request->visualiza = 'S';
@@ -117,7 +115,7 @@ class Senhas extends Model {
             $senhas = $this->find($request->id);
 
 
-           return $update = $senhas->update([
+            return $update = $senhas->update([
                 'login' => $request->login,
                 'pwd' => $request->pwd,
                 'obs' => $request->obs,

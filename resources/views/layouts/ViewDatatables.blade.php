@@ -8,11 +8,9 @@
 
         <tr>
             @foreach ($grid->gridColumns as $th)
-            <th>{{$th}}</td>
-
-
-                @endforeach
-            <th></th>
+            <th style="text-align: center">{{$th->chead}}</td>
+            @endforeach
+            <th style='text-align: center'><em class="fa fa-cog"></em></th>
         </tr>
 
     </thead>
