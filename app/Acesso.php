@@ -24,7 +24,7 @@ class Acesso extends Model {
 
     public static function acessosLst() {
 
-        $acessos = Acesso::all();
+        $acessos = Acesso::orderBy('acesso', 'ASC')->get();
 
         return $acessos;
     }

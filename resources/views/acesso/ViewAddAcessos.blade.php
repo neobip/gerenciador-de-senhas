@@ -1,4 +1,4 @@
 
 
-{!! $fields['acesso'] !!} 
-{!! $fields['link'] !!}
+{!! $elements['acesso'] !!} 
+{!! $elements['link'] !!}

@@ -9,7 +9,7 @@ use App\Notificacao;
 use App\Libs\Grid;
 use App\Libs\Button;
 use App\Libs\Form;
-use App\Libs\Field;
+use App\Libs\Element;
 
 class AcessoController extends Controller {
 
@@ -26,7 +26,7 @@ class AcessoController extends Controller {
         $grid->titleGrid = $this->title;
         $grid->addButton('edit', 'info', '', 'fa fa-pencil', 'acessos', 'modal', 'edit');
         $grid->addButton('edit', 'danger', '', 'fa fa-trash', 'acessos', 'modal', 'del');
-        
+
         $grid->addColumn('Acesso', 'acesso');
         $grid->addColumn('Link', 'link');
 
@@ -46,7 +46,7 @@ class AcessoController extends Controller {
 
         $notificacaoLst = $this->notificacao;
 
-        echo view('acesso.ViewIndex', compact('notificacaoLst', 'htmlGrid', 'title', 'btnAdd'));
+        echo view('layouts.ViewIndex', compact('notificacaoLst', 'htmlGrid', 'title', 'btnAdd'));
     }
 
     public function add() {
@@ -55,15 +55,17 @@ class AcessoController extends Controller {
 
         $form = new Form('enviaAcessos', 'POST', 'acesso.ViewAddAcessos');
 
-        $field = new Field('text', 'acesso', 'Acesso', 'required', '', '');
-        $form->addField($field);
+        $element = new Element('text', 'acesso', 'Acesso', '');
+        $element->required = 'required';
+        $form->addElement($element);
 
-        $field = new Field('text', 'link', 'Link', 'required', '');
-        $form->addField($field);
+        $element = new Element('text', 'link', 'Link', '');
+        $element->required = 'required';
+        $form->addElement($element);
 
         $formulario = $form->getHtml();
 
-        return view('acesso.ViewAdd', compact('title', 'formulario'));
+        return view('layouts.ViewAdd', compact('title', 'formulario'));
     }
 
     public function edit(Request $request) {
@@ -72,14 +74,15 @@ class AcessoController extends Controller {
 
         $form = new Form('enviaAcessos', 'POST', 'acesso.ViewEditAcessos');
 
-        $field = new Field('hidden', 'id', '', 'required', $acessos->id);
-        $form->addField($field);
+        $element = new Element('hidden', 'id', '', $acessos->id);
+        $element->required = 'required';
+        $form->addElement($element);
 
-        $field = new Field('text', 'acesso', 'Acesso', 'required', $acessos->acesso, 'Acesso');
-        $form->addField($field);
+        $element = new Element('text', 'acesso', 'Acesso', $acessos->acesso, 'Acesso');
+        $form->addElement($element);
 
-        $field = new Field('text', 'link', 'Link', 'required', $acessos->link);
-        $form->addField($field);
+        $element = new Element('text', 'link', 'Link', $acessos->link);
+        $form->addElement($element);
 
         $delTitle = 'Deseja deletar o acesso ' . $acessos->acesso . "?";
 
@@ -112,6 +115,16 @@ class AcessoController extends Controller {
         $acessosLst = Acesso::acessosLst();
 
         Grid::jsonGrid($acessosLst, $this->idGrid);
+    }
+
+    public function getAcessos() {
+        $acessos = Acesso::acessosLst();
+        
+//        print "<pre>";
+//        print_r(json_encode($acessos));
+//        die();
+//        response()->json($estados)
+        return response()->json($acessos);
     }
 
 }

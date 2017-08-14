@@ -40,6 +40,7 @@ Route::get('/acessos/del', 'AcessoController@del')->name('del');
 Route::post('/acessos/envia', 'AcessoController@envia')->name('enviaAcessos');
 Route::get('acessos/index', 'AcessoController@index')->name('acesso');
 Route::get('acessos/gridAcessosload', 'AcessoController@gridAcessosload')->name('gridAcessos');
+Route::get('acessos', 'AcessoController@getAcessos');
 // --- [end route acessos] -- /
 
 // --- [start route usuarios] -- //

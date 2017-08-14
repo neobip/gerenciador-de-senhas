@@ -3,16 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Yajra\Datatables\Datatables;
 use App\Senhas;
 use App\Acesso;
 use App\User;
 use App\Notificacao;
 use App\Libs\Grid;
-use App\Libs\Columns;
 use App\Libs\Button;
 use App\Libs\Form;
-use App\Libs\Field;
+use App\Libs\Element;
 
 class SenhasController extends Controller {
 
@@ -31,9 +29,6 @@ class SenhasController extends Controller {
         $notificacaoLst = $this->notificacao;
 
         $grid = new Grid($this->idGrid);
-//        $grid->gridColumns = array('Acesso', 'Usuario', 'Login', 'Senha', 'Observacao');
-//        $grid->gridColumns = array('Login'=>'Login');
-//        $grid->gridColumns = array('login');
         $grid->titleGrid = $this->title;
         $grid->addButton('editSenhas', 'info', '', 'fa fa-pencil', 'senhas', 'modal', 'edit');
         $grid->addButton('editSenhas', 'danger', '', 'fa fa-trash', 'senhas', 'modal', 'del');
@@ -57,49 +52,89 @@ class SenhasController extends Controller {
 
         $htmlGrid = $grid->createGrid();
 
-        echo view('senhas.ViewIndex', compact('notificacaoLst', 'htmlGrid', 'title', 'btnAdd'));
+        echo view('layouts.ViewIndex', compact('notificacaoLst', 'htmlGrid', 'title', 'btnAdd'));
     }
 
     public function addForm() {
 
         $title = 'Cadastrar senha';
 
-        $acessos = Acesso::pluck('acesso', 'id');
-        $users = User::pluck('name', 'id');
+        $form = new Form('enviaSenhas', 'POST', 'senhas.ViewAddSenhas');
 
-        $notificacaoLst = Notificacao::notificacaoLst();
+        $element = new Element('checkbox', 'global', 'Compartilhada?', '');
+        $form->addElement($element);
 
-        return view('senhas.ViewAdd', compact('title', 'acessos', 'users', 'notificacaoLst'));
+        $element = new Element('checkbox', 'visualiza', 'Vizualiza?', '');
+        $form->addElement($element);
+
+        $element = new Element('select', 'user', 'Responsável', '');
+        $form->addElement($element);
+
+        $element = new Element('select', 'acessos', 'Acesso', '');
+        $form->addElement($element);
+
+        $element = new Element('text', 'login', 'Login', '');
+        $element->setRequire();
+        $form->addElement($element);
+
+        $element = new Element('text', 'pwd', 'Senha', '');
+        
+        $form->addElement($element);
+
+        $element = new Element('textarea', 'observacao', 'Observação', '');
+        $element->row = 3;
+        $form->addElement($element);
+
+
+
+        $element = new Element('text', 'link', 'Link', '');
+        $element->required = 'required';
+        $form->addElement($element);
+
+        $formulario = $form->getHtml();
+
+        return view('layouts.ViewAdd', compact('title', 'formulario'));
     }
 
     public function editForm(Request $request) {
         $senhas = Senhas::senhaID($request->id);
         
-        $acessosLst = Acesso::pluck('acesso', 'id');
-        
-        Grid::jsonSelect($acessosLst);
-//        
 //        print "<pre>";
-//        print_r($acessosLst);
+//        print_r($senhas->global);
 //        die();
-        $users = User::pluck('name', 'id');
 
-        $form = new Form('enviaAcessos', 'POST', 'senhas.ViewEditSenhas');
+        $form = new Form('enviaSenhas', 'POST', 'senhas.ViewAddSenhas');
 
-        $field = new Field('hidden', 'id', '', 'required', $senhas->id);
-        $form->addField($field);
+        $element = new Element('checkbox', 'global', 'Compartilhada?', $senhas->global);
+        $element->setCheck($senhas->global);
+        $form->addElement($element);
 
-        $field = new Field('checkbox', 'global', 'Senha compartilhada', '', $senhas->global);
-        $form->addField($field);
+        $element = new Element('checkbox', 'visualiza', 'Vizualiza?', $senhas->visualiza);
+        $form->addElement($element);
 
-        $field = new Field('select', 'link', 'Link', '', $acessosLst);
-        $form->addField($field);
+        $element = new Element('select', 'user', 'Responsável', $senhas->user_id);
+        $form->addElement($element);
 
-        $delTitle = 'Deseja deletar o acesso';
+        $element = new Element('select', 'acessos', 'Acesso', $senhas->acesso_id);
+        $form->addElement($element);
+
+        $element = new Element('text', 'login', 'Login', $senhas->login);
+        $element->setRequire();
+//        $element->required = 'required';
+        $form->addElement($element);
+
+        $element = new Element('text', 'pwd', 'Senha', $senhas->pwd);
+        $form->addElement($element);
+
+        $element = new Element('textarea', 'observacao', 'Observação', $senhas->observacao);
+        $element->row = 3;
+        $form->addElement($element);
 
         $formulario = $form->getHtml();
 
-        return view('layouts.ViewEdit', compact('senhas', 'formulario', 'delTitle'));
+        $delTitle = 'Deseja deletar o acesso';
+
+        return view('layouts.ViewEdit', compact('title', 'formulario', 'delTitle'));
     }
 
     public function delete(Request $request) {
