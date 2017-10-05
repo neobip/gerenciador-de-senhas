@@ -50,6 +50,7 @@ function action(id, name) {
     switch (id) {
 
         case 'edit':
+            
             $('#footer_action_button').text(" Atualizar");
             $('#footer_action_button').addClass('fa fa-floppy-o ');
             $('#footer_action_button').removeClass('glyphicon-trash');
@@ -66,13 +67,16 @@ function action(id, name) {
 
                 $('.modal-footer').on('click', '.edit', function () {
 //                    e.preventDefault();
-////                    alert(caller);
+                                        
+
                     $.ajax({
                         dataType: 'json',
                         type: 'post',
                         url: end,
                         data: $("form").serialize(),
                         success: function (response) {
+                            
+
                             console.log(response);
 //                            alert(response);
                             toastr.info('Registro atualizado', '', {

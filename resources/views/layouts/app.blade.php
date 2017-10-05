@@ -20,7 +20,7 @@
             <link href="{{ asset('css/morrisjs/morris.css') }}" rel="stylesheet">
             <link href="{{ asset('css/metisMenu/metisMenu.min.css') }}" rel="stylesheet">
 
-            <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
 
 
             <link href="{{ asset('css/font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet">
@@ -29,7 +29,6 @@
         </div>
         <div id="wrapper">
             @if (!Auth::guest())
-            @include('navbar')
             @endif
 
 
@@ -40,7 +39,7 @@
         <script src="{{ asset('js/metisMenu/metisMenu.min.js') }}"></script>
         <script src="{{ asset('js/morrisjs/morris.min.js') }}"></script>
         <script src="{{ asset('js/sb-admin-2.js') }}"></script>
-        <script src="{{ asset('js/select2.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
 
         <script src="{{ asset('js/modal.js') }}"></script>
 

@@ -3,10 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\User;
 use Illuminate\Support\Facades\Crypt;
 
-//use App\Acesso;
+use App\User;
+use App\Acesso;
 
 class Senhas extends Model {
 
@@ -39,23 +39,27 @@ class Senhas extends Model {
             $senhas = Senhas::with('acessos')->get();
         } else {
 
-            $senhas = Senhas::where('user_id', User::getUserTipo())
+            $senhas = Senhas::where('user_id', User::getUserID())
                             ->orWhere(function ($query) {
                                 $query->where('global', 'S')
                                 ->where('visualiza', 'S');
                             })->get();
         }
-        
-        foreach($senhas as $value){
-            
+
+
+
+
+        foreach ($senhas as $value) {
+
             $senha['id'] = $value['id'];
-            
+
+            $senha['tipo'] = $value['Users']['tipo'];
             $senha['responsavel'] = $value['Users']['name'];
-            $senha['acessos'] = $value['Acessos']['acesso'];
+            $senha['acessos'] = "<a href='" . $value['Acessos']['link'] . "' target='_blank'>" . $value['Acessos']['acesso'] . "</a>";
             $senha['login'] = $value['login'];
             $senha['senha'] = $value['pwd'];
-            $senha['obs'] = $value['observacao'];
-            
+            $senha['obs'] = $value['obs'];
+
             $senhasLst[] = $senha;
         }
 
@@ -67,25 +71,25 @@ class Senhas extends Model {
 
         return $senhas;
     }
-    
-//    public static function getUser
 
     public static function senhaID($id) {
-//        $senhaByID = $this->find($id);
-//
-//        $senha['ID'] = $senhaByID['id'];
-//        $senha['Login'] = $this->trataCrypt($senhaByID['login']);
-//        $senha['AcessoID'] = $senhaByID['acesso_id'];
-//        $senha['Senha'] = $this->trataCrypt($senhaByID['pwd']);
-//        $senha['Observacao'] = $this->trataCrypt($senhaByID['obs']);
-//        $senha['Visualiza'] = $senhaByID['visualiza'];
-//        $senha['Global'] = $senhaByID['global'];
-//        $senha['UserID'] = $senhaByID['user_id'];
-//
-//        $senhaLst[] = $senha;
-        
-        
- return Senhas::find($id);
+        $senhaByID = Senhas::find($id);
+        //
+        $senha['id'] = $senhaByID['id'];
+        $senha['login'] = $senhaByID['login'];
+        $senha['acesso_id'] = $senhaByID['acesso_id'];
+        $senha['acessoLst'] = Acesso::acessosLst();;
+        $senha['usersLst'] = User::usuariosLst();
+        $senha['pwd'] = $senhaByID['pwd'];
+        $senha['observacao'] = $senhaByID['obs'];
+        $senha['visualiza'] = $senhaByID['visualiza'];
+        $senha['global'] = $senhaByID['global'];
+        $senha['user_id'] = $senhaByID['user_id'];
+        $senha['tipo'] = $senhaByID['Users']['tipo'];
+
+        $senhaLst[] = $senha;
+
+        return $senhaLst;
 
 //        return $senhaLst;
         return $senha;
@@ -93,15 +97,11 @@ class Senhas extends Model {
 
     public function sendData($request) {
 
-        $user = new User();
-
-
-
         if ($user->getUserTipo() == '2') {
             $request->visualiza = 'S';
             $request->global = 'N';
-            $request->user_id = $user->getUserID();
-        } elseif ($user->getUserTipo() == '1') {
+            $request->user_id = User::getUserID();
+        } elseif (User::getUserTipo() == '1') {
             if (!isset($request->visualiza)) {
                 $request->visualiza = 'N';
             }

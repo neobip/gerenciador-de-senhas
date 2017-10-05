@@ -13,4 +13,14 @@
         <span class='glyphicon glyphicon-remove'></span> Cancelar
     </button>
 </div>
-
+<style>
+    .select2-container.form-control {
+     height: auto !important;
+    }
+</style>
+<script>
+//    $(document).ready(function() {
+//    $('.select2').select2();
+//});
+</script>
+    

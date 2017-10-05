@@ -20,6 +20,9 @@ class Element {
     public $required;
     public $row;
     public $check;
+    public $options = array();
+    public $select;
+    public $atribOption;
 
     public function __construct($type, $name, $label, $value) {
         $this->type = $type;
@@ -32,16 +35,27 @@ class Element {
 
         switch ($this->type) {
             case 'checkbox':
-               $element = ' <div><label>'.$this->label.'</label><div class="material-switch pull-right">
-                            <input id="'.$this->name.'" name="someSwitchOption001" type="checkbox" '.$this->check.' />
-                            <label for="'.$this->name.'" class="label-success"></label>
+                $element = ' <div><label>' . $this->label . '</label><div class="material-switch pull-right">
+                            <input id="' . $this->name . '" name="someSwitchOption001" type="checkbox" ' . $this->check . ' />
+                            <label for="' . $this->name . '" class="label-success"></label>
                         </div></div>';
 
                 break;
 
             case 'select':
                 $element = '<label for="' . $this->name . '">' . $this->label . '</label>';
-                $element .= '<select class="form-control" name="' . $this->name . '" >';
+                $element .= '<select class="form-control select2" name="' . $this->name . '" >';
+
+                for ($i = 0; $i < count($this->options); $i++) {
+                    if ($this->options[$i]['id'] == $this->value) {
+                        $this->select = 'selected';
+                        $element .= '<option selected="' . $this->select . '" value="' . $this->value . '">' . $this->options[$i][$this->atribOption] . '</option>';
+                    }
+                    if ($this->options[$i]['id'] <> $this->value) {
+                        $element .= '<option value="' . $this->options[$i]['id'] . '">' . $this->options[$i][$this->atribOption] . '</option>';
+                    }
+                }
+
                 $element .= "</select>";
 
 
@@ -67,16 +81,27 @@ class Element {
     public function __toString() {
         return $this->getHtml();
     }
-    
-    public function setCheck($check){
-        if($check == 'S'){
-            $this->check = 'checked';
+
+    public function setCheck($check) {
+        if ($check == 'S') {
+            return $this->check = 'checked';
         }
-        
+    }
+
+    public function setOptions($options) {
+        $this->options = $options;
+    }
+
+    public function setSelected($value) {
+        $this->value = $value;
     }
     
-    public function setRequire(){
-        if(isset($this)){
+    public function setAtribOption($pAtrib) {
+        $this->atribOption = $pAtrib;
+    }
+
+    public function setRequire() {
+        if (isset($this)) {
             $this->required = 'required';
         }
     }

@@ -63,23 +63,23 @@ $(function () {
     });
 });
 
-$(document).ready(function () {
-//    $('[data-toggle="modal"]').click(function (e) {
-    $('body').on('click', '[data-toggle="modal"]', function (e) {
-        $.getJSON("/gerenciador-de-senhas/public/acessos", function (json) {
-//      document.write("oi");
-            $('select[name=acessos]').empty();
-            $.each(json, function (key, value) {
-
-
-//            $('select[name=estado]').append($('<option>').id(obj.id).attr('value', obj.text));
-                $('select[name=acessos]').append('<option value=' + value.id + '>' + value.acesso + '</option>');
-
-            });
-
-
-        });
-    
-    });
-});
+//$(document).ready(function () {
+////    $('[data-toggle="modal"]').click(function (e) {
+//    $('body').on('click', '[data-toggle="modal"]', function (e) {
+//        $.getJSON("/gerenciador-de-senhas/public/acessos", function (json) {
+////      document.write("oi");
+//            $('select[name=acessos]').empty();
+//            $.each(json, function (key, value) {
+//
+//
+////            $('select[name=estado]').append($('<option>').id(obj.id).attr('value', obj.text));
+//                $('select[name=acessos]').append('<option value=' + value.id + '>' + value.acesso + '</option>');
+//
+//            });
+//
+//
+//        });
+//    
+//    });
+//});
 

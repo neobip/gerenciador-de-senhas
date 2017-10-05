@@ -37,7 +37,7 @@ class User extends Authenticatable {
 
     public static function usuariosLst() {
 
-        $usuarios = User::all();
+        $usuarios = User::orderBy('name', 'ASC')->get();
 
         return $usuarios;
     }
@@ -46,7 +46,7 @@ class User extends Authenticatable {
         return User::find($id);
     }
 
-    public function getUserID() {
+    public static function getUserID() {
         return Auth::user()->id;
     }
 
