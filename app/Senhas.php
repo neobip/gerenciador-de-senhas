@@ -85,19 +85,16 @@ class Senhas extends Model {
         $senha['visualiza'] = $senhaByID['visualiza'];
         $senha['global'] = $senhaByID['global'];
         $senha['user_id'] = $senhaByID['user_id'];
-        $senha['tipo'] = $senhaByID['Users']['tipo'];
 
         $senhaLst[] = $senha;
 
         return $senhaLst;
 
-//        return $senhaLst;
-        return $senha;
     }
 
     public function sendData($request) {
-
-        if ($user->getUserTipo() == '2') {
+       
+        if (User::getUserTipo() == '2') {
             $request->visualiza = 'S';
             $request->global = 'N';
             $request->user_id = User::getUserID();

@@ -23,7 +23,6 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 // ---  [START Routes Senhas] ---
-Route::get('/senhas/index', 'SenhasController@index');
 Route::get('/senhas/add', 'SenhasController@addForm')->name('addSenhas');
 Route::get('/senhas/edit', 'SenhasController@editForm')->name('editSenhas');
 Route::post('/senhas/envia', 'SenhasController@envia')->name('enviaSenhas');

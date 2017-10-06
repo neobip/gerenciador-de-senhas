@@ -3,46 +3,46 @@
 
 @section('content')
 
+<div id="page-wrapper">
 
-<div class="content-page">
-    <div class="content">
-        <div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
 
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="page-title-box">
-                        <h4 class="page-title float-left"> {{$title}}</h4>
+            <h1 class="page-header"><i class='{{$icon}}'></i> {{$title}}</h1>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                
+                <div class="panel-body card-box effect3">
 
-                        <ol class="breadcrumb float-right">
-                            <li class="breadcrumb-item"><a href="#">Geral</a></li>
-                            <li class="breadcrumb-item active"> {{$title}}</li>
-                        </ol>
+                    <!--<div class="card-box effect3">-->
+                    <div class="row ">
+                        <div class="col-lg-12 ">
 
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-12">
-                    <div class="card-box effect3">
-                        <div class="row">
-                            <div class="col-12">
-                                <h4 class="header-title m-t-0"></h4>
-
-                                {!! $formulario !!}
-                            </div>
+                            {!! $formulario !!}
                         </div>
                     </div>
+                    <!--</div>-->
                 </div>
             </div>
         </div>
+
     </div>
+
 </div>
 
 <div class="deleteContent">
 </div>
 
+<script>
+    $(document).ready(function () {
+        $('.select2').select2();
+    });
+</script>
 
 
 @endsection

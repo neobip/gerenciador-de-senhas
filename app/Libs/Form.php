@@ -28,7 +28,7 @@ class Form {
     }
 
     public function getHtml() {
-        $form = "<form action=" . route($this->route) . " method='" . $this->method . "' class='form-horizontal' role='form'>" . csrf_field();
+        $form = "<form action=" . route($this->route) . " method='" . $this->method . "' role='form'>" . csrf_field();
 
         $elements = $this->elements;
 

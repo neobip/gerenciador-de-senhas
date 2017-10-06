@@ -30,8 +30,7 @@ class SenhasController extends Controller {
 
         $grid = new Grid($this->idGrid);
         $grid->titleGrid = $this->title;
-        $grid->addButton('editSenhas', 'info', '', 'fa fa-pencil', 'senhas', '', 'edit');
-        $grid->addButton('editSenhas', 'danger', '', 'fa fa-trash', 'senhas', 'modal', 'del');
+        $grid->addButton('editSenhas', 'info', 'Editar', 'fa fa-pencil', 'senhas', '', 'edit');
 
         $grid->addColumn('Acesso', 'acessos');
         $grid->addColumn('Responsável', "responsavel");
@@ -61,98 +60,136 @@ class SenhasController extends Controller {
 
         $form = new Form('enviaSenhas', 'POST', 'senhas.ViewElements');
 
-        $element = new Element('checkbox', 'global', 'Compartilhada?', '');
+        $element = new Element('checkbox', 'global', 'global', 'Compartilhada?');
         $form->addElement($element);
 
-        $element = new Element('checkbox', 'visualiza', 'Vizualiza?', '');
+        $element = new Element('checkbox', 'visualiza', 'visualiza', 'Vizualiza?');
         $form->addElement($element);
 
         $element = new Element('hidden', 'tipo', 'tipo', User::getUserTipo());
         $form->addElement($element);
 
-        $element = new Element('select', 'user', 'Responsável', '');
-        $element->setOptions(User::usuariosLst());
-        $element->setAtribOption('name');
+        $element = new Element('select', 'user_id', 'user', 'Responsável');
+        $element->setOptions(User::usuariosLst(), 'id', 'name');
+        $element->setSelected(User::getUserID());
         $form->addElement($element);
 
-        $element = new Element('select', 'acessos', 'Acesso', '');
-        $element->setOptions(Acesso::acessosLst());
-        $element->setAtribOption('acesso');
+        $element = new Element('select', 'acesso_id', 'acessos', 'Acesso');
+        $element->setOptions(Acesso::acessosLst(), 'id', 'acesso');
         $form->addElement($element);
 
-        $element = new Element('text', 'login', 'Login', '');
+        $element = new Element('text', 'login', 'login', 'Login');
         $element->setRequire();
         $form->addElement($element);
 
-        $element = new Element('text', 'pwd', 'Senha', '');
+        $element = new Element('text', 'pwd', 'pwd', 'Senha');
         $form->addElement($element);
 
-        $element = new Element('textarea', 'observacao', 'Observação', '');
+        $element = new Element('textarea', 'obs', 'obs', 'Observação');
         $element->row = 3;
-        
+        $form->addElement($element);
+
+        $element = new Element('submit', 'btnSave', 'btnSave', '');
+        $element->setValue('Cadastrar');
+        $element->setClass('btn btn-success pull-right m-l-5');
+        $element->setIcon('fa fa-save');
+        $form->addElement($element);
+
+
+        $element = new Element('link', 'btnCancel', 'btnCancel', '');
+        $element->setValue('Cancelar');
+        $element->setClass('btn btn-danger pull-right');
+        $element->setRoute('senha');
+        $element->setIcon('fa fa-close');
         $form->addElement($element);
 
         $formulario = $form->getHtml();
 
         $title = 'Cadastrar senha';
+        $icon = 'fa fa-save';
 
         $notificacaoLst = $this->notificacao;
 
-
-//        return view('layouts.ViewForm', compact('notificacaoLst', 'title', 'formulario'));
-        return view('layouts.ViewForm', compact('notificacaoLst', 'title', 'formulario'));
+        return view('layouts.ViewForm', compact('notificacaoLst', 'icon', 'title', 'formulario'));
     }
 
     public function editForm(Request $request) {
         $senhas = Senhas::senhaID($request->id);
-//        print "<pre>";
-//        print_r($senhas[0]['acessoLst']);
-//        die();
+
 
         $form = new Form('enviaSenhas', 'POST', 'senhas.ViewElements');
 
-        $element = new Element('hidden', 'id', 'id', $senhas[0]['id']);
+        $element = new Element('hidden', 'id', 'id', '');
+        $element->setValue($senhas[0]['id']);
         $form->addElement($element);
 
-        $element = new Element('hidden', 'tipo', 'tipo', $senhas[0]['tipo']);
-        $form->addElement($element);
+//        $element = new Element('input', 'tipo', 'tipo', '');
+//        $element->setValue(User::getUserTipo());
+//        $form->addElement($element);
 
-        $element = new Element('checkbox', 'global', 'Compartilhada?', $senhas[0]['global']);
+        $element = new Element('checkbox', 'global', 'global', 'Compartilhada?');
         $element->setCheck($senhas[0]['global']);
         $form->addElement($element);
 
-//        $element = new Element('checkbox', 'visualiza', 'Vizualiza?', $senhas->visualiza);
-        $element = new Element('checkbox', 'visualiza', 'Vizualiza?', $senhas[0]['visualiza']);
+//        $element = new Element('select', 'global', 'global', 'Compartilhada?');
+//            $element->setOptions(Acesso::acessosLst(), 'id', 'acesso');
+//        $element->setAtribOption('acesso');
+//        $element->setSelected($senhas[0]['acesso_id']);
+//        $element->setMultiSelect2();
+//        $form->addElement($element);
+
+        $element = new Element('checkbox', 'visualiza', 'visualiza', 'Vizualiza?');
         $element->setCheck($senhas[0]['visualiza']);
         $form->addElement($element);
 
-        $element = new Element('select', 'user', 'Responsável', $senhas[0]['user_id']);
-        $element->setOptions($senhas[0]['usersLst']);
-        $element->setAtribOption('name');
+
+        $element = new Element('select', 'user_id', 'user', 'Responsável');
+        $element->setOptions(User::usuariosLst(), 'id', 'name');
         $element->setSelected($senhas[0]['user_id']);
         $form->addElement($element);
 
-        $element = new Element('select', 'acessos', 'Acesso', $senhas[0]['acesso_id']);
-        $element->setOptions($senhas[0]['acessoLst']);
-        $element->setAtribOption('acesso');
+        $element = new Element('select', 'acesso_id', 'acessos', 'Acesso');
+        $element->setOptions(Acesso::acessosLst(), 'id', 'acesso');
         $element->setSelected($senhas[0]['acesso_id']);
         $form->addElement($element);
 
-        $element = new Element('text', 'login', 'Login', $senhas[0]['login']);
+        $element = new Element('text', 'login', 'login', 'Login');
         $element->setRequire();
-//        $element->required = 'required';
+        $element->setValue($senhas[0]['login']);
         $form->addElement($element);
 
-        $element = new Element('text', 'pwd', 'Senha', $senhas[0]['pwd']);
+        $element = new Element('text', 'pwd', 'pwd', 'Senha');
+        $element->setValue($senhas[0]['pwd']);
         $form->addElement($element);
 
-        $element = new Element('textarea', 'observacao', 'Observação', $senhas[0]['observacao']);
+        $element = new Element('textarea', 'obs', 'obs', 'Observação');
         $element->row = 3;
+        $element->setValue($senhas[0]['observacao']);
+        $form->addElement($element);
+
+        $element = new Element('submit', 'btnSave', 'btnSave', '');
+        $element->setValue('Atualizar');
+        $element->setClass('btn btn-success pull-right m-l-5');
+        $element->setIcon('fa fa-save');
+        $form->addElement($element);
+
+
+        $element = new Element('link', 'btnCancel', 'btnCancel', '');
+        $element->setValue('Cancelar');
+        $element->setClass('btn btn-danger pull-right');
+        $element->setRoute('senha');
+        $element->setIcon('fa fa-close');
         $form->addElement($element);
 
         $formulario = $form->getHtml();
 
-        return view('layouts.ViewForm', compact('formulario'));
+        $title = 'Atualizar senha';
+        $icon = 'fa fa-save';
+        $tipo = User::getUserTipo();
+
+        $notificacaoLst = $this->notificacao;
+
+        return view('layouts.ViewForm', compact('notificacaoLst', 'tipo', 'icon', 'title', 'formulario'));
     }
 
     public function delete(Request $request) {
@@ -164,22 +201,13 @@ class SenhasController extends Controller {
 
     public function envia(Request $request) {
 
-
         $senha = new Senhas();
 
         $userID = new User();
 
         $send = $senha->sendData($request);
 
-
-        if (isset($request->id)) {
-            print "<pre>";
-            print_r(response()->json);
-            die();
-            return response()->json(array('idGrid' => $this->idGrid));
-        } else {
-            return response()->json(array('idGrid' => $this->idGrid));
-        }
+        return redirect()->route('senha')->with('info');
     }
 
     public function gridsenhasload() {

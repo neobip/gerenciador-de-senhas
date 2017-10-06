@@ -29,6 +29,8 @@
         </div>
         <div id="wrapper">
             @if (!Auth::guest())
+                     @include('navbar')
+
             @endif
 
 

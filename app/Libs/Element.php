@@ -20,14 +20,22 @@ class Element {
     public $required;
     public $row;
     public $check;
-    public $options = array();
-    public $select;
-    public $atribOption;
+    public $placeholder;
+    public $value;
+    public $class;
+    public $icon;
+    public $mask = '';
+    public $options;
+    public $selected;
+    public $atrib;
+    public $optionEmpty;
+    public $multiselect;
+    public $valueDefault;
 
-    public function __construct($type, $name, $label, $value) {
+    public function __construct($type, $name, $id, $label) {
         $this->type = $type;
         $this->name = $name;
-        $this->value = $value;
+        $this->id = $id;
         $this->label = $label;
     }
 
@@ -36,42 +44,73 @@ class Element {
         switch ($this->type) {
             case 'checkbox':
                 $element = ' <div><label>' . $this->label . '</label><div class="material-switch pull-right">
-                            <input id="' . $this->name . '" name="someSwitchOption001" type="checkbox" ' . $this->check . ' />
+                            <input value="S" id="' . $this->name . '" name="' . $this->name . '" type="checkbox" ' . $this->check . ' />
                             <label for="' . $this->name . '" class="label-success"></label>
                         </div></div>';
 
                 break;
 
+            case 'submit':
+                $element = '<button id="' . $this->id . '" name="' . $this->name . '" type="submit" class="waves-effect ' . $this->class . '"/><span class="' . $this->icon . '"></span> ' . $this->value . '</button>';
+                break;
+
+            case 'data':
+                $element = '<label>' . $this->label . '</label>
+                                <div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="dd/mm/yyyy" id="datepicker">
+                                        <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
+                                    </div>
+                                </div>';
+                break;
+
             case 'select':
                 $element = '<label for="' . $this->name . '">' . $this->label . '</label>';
-                $element .= '<select class="form-control select2" name="' . $this->name . '" >';
-
+                $element .= '<select ' . $this->multiselect . ' class="form-control select2" name="' . $this->name . '" "' . $this->required . '" >';
+                $element .= $this->optionEmpty;
                 for ($i = 0; $i < count($this->options); $i++) {
-                    if ($this->options[$i]['id'] == $this->value) {
-                        $this->select = 'selected';
-                        $element .= '<option selected="' . $this->select . '" value="' . $this->value . '">' . $this->options[$i][$this->atribOption] . '</option>';
+
+                    if (is_object($this->options)) {
+                        $value = $this->options[$i][$this->value];
+                        $atrib = $this->options[$i][$this->atrib];
+                    } else {
+                        $value = $this->options[$i];
+                        $atrib = $this->options[$i];
                     }
-                    if ($this->options[$i]['id'] <> $this->value) {
-                        $element .= '<option value="' . $this->options[$i]['id'] . '">' . $this->options[$i][$this->atribOption] . '</option>';
+
+                    if ($value == $this->valueDefault) {
+                        $element .= '<option selected="' . $this->selected . '" value="' . $this->valueDefault . '">' . $atrib . '</option>';
+                    }
+                    if ($value <> $this->valueDefault) {
+                        $element .= '<option value=' . $value . '>' . $atrib . '</option>';
                     }
                 }
-
                 $element .= "</select>";
+                break;
 
+            case 'link':
+//                $element = '<a href="' . route($this->route) . '?id=' . $dataID . '"  class="'.$this->class.'" id="' . $this->id . '" 
+//                                                    name="' . $this->name . '" 
+//                                                    data-toggle="' . $this->toggle . '"
+//                                                    data-id="' . $dataID . '" title="' . $this->title . '"><i id="' . $this->id . '" class="' . $this->icon . '" ></i> ' . $this->title . '</a>';
+                $element = '<a href="' . route($this->route) . '?id="  class="' . $this->class . '" id="' . $this->id . '" 
+                                                    name="' . $this->name . '" 
+                                                    data-toggle=""
+                                                    data-id="" title=""><i id="' . $this->id . '" class="waves-effect ' . $this->icon . '" ></i> ' . $this->value . '</a>';
 
                 break;
 
             case 'textarea':
-
                 $element = '<label for = "">' . $this->label . '</label>';
-                $element.= '<textarea name="' . $this->name . '" class = "form-control" rows = "' . $this->row . '"></textarea>';
+                $element .= '<textarea name="' . $this->name . '" class = "form-control" rows = "' . $this->row . '"></textarea>';
 
                 break;
 
 
             default:
                 $element = '<label>' . $this->label . '</label>';
-                $element .= '<input type="' . $this->type . '" value="' . $this->value . '" name="' . $this->name . '" ' . $this->required . ' class="form-control"/>';
+//                $element .= '<input data-mask="'.$this->mask.'" placeholder="'.$this->placeholder.'" type="' . $this->type . '" value="' . $this->value . '" name="' . $this->name . '" ' . $this->required . ' class="form-control"/>';
+                $element .= '<input placeholder="' . $this->placeholder . '" type="' . $this->type . '" value="' . $this->value . '" name="' . $this->name . '" ' . $this->required . ' class="form-control"/>';
                 break;
         }
 
@@ -82,28 +121,78 @@ class Element {
         return $this->getHtml();
     }
 
-    public function setCheck($check) {
-        if ($check == 'S') {
-            return $this->check = 'checked';
+    // START SELECT Options
+    public function setOptions($pOptions, $pValue, $pAtrib) {
+
+
+        $this->options = $pOptions;
+
+
+        $this->value = $pValue;
+
+
+        $this->atrib = $pAtrib;
+    }
+
+    public function setOptionEmpty() {
+        if (isset($this)) {
+            $this->optionEmpty = '<option></option>';
         }
     }
 
-    public function setOptions($options) {
-        $this->options = $options;
+    public function setMultiSelect2() {
+        if (isset($this)) {
+            $this->multiselect = "multiple";
+        }
     }
 
     public function setSelected($value) {
-        $this->value = $value;
-    }
-    
-    public function setAtribOption($pAtrib) {
-        $this->atribOption = $pAtrib;
+        $this->valueDefault = $value;
     }
 
+    // END SELECT
+    // CHECK IF FIELD CHECKBOX IS CHECKED
+    public function setCheck($check) {
+        if ($check == 'S') {
+            $this->check = 'checked';
+        }
+    }
+
+    // FIELD IS REQUIRED
     public function setRequire() {
         if (isset($this)) {
             $this->required = 'required';
         }
+    }
+
+    public function setValue($value) {
+        $this->value = $value;
+    }
+
+    public function setPlaceholder($placeholder) {
+        if (isset($this)) {
+            $this->placeholder = $placeholder;
+        }
+    }
+
+    public function setMaskPhone() {
+        $this->mask = "(999) 999999999";
+    }
+
+    public function setMaskData() {
+        $this->mask = "dd/mm/yyyy";
+    }
+
+    public function setClass($class) {
+        $this->class = $class;
+    }
+
+    public function setIcon($icon) {
+        $this->icon = $icon;
+    }
+
+    public function setRoute($route) {
+        $this->route = $route;
     }
 
 }
