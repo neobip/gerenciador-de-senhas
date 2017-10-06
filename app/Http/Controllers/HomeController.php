@@ -8,6 +8,7 @@ use App\Senhas;
 use App\User;
 use App\Notificacao;
 use App\Contatossenhas;
+use Laralabs\Toaster\Toast;
 
 class HomeController extends Controller {
 
@@ -33,7 +34,7 @@ class HomeController extends Controller {
 //        print "<pre>";
 //        print_r($notificacaoLst);
 //        die();
-        
+ toaster()->add('Add message here')->toast();
         return view('home', compact('qtdSenhas', 'nome', 'notificacaoLst', 'contatosLst'));
     }
 

@@ -11,6 +11,7 @@ use App\Libs\Grid;
 use App\Libs\Button;
 use App\Libs\Form;
 use App\Libs\Element;
+use Laralabs\Toaster\Toaster;
 
 class SenhasController extends Controller {
 
@@ -50,8 +51,10 @@ class SenhasController extends Controller {
         $btnAdd = $btn->createButton(NULL);
 
         $htmlGrid = $grid->createGrid();
+//        http://docs.laralabs.uk/toaster/
+        toaster()->add('Add message here')->title('Message title here');
 
-        echo view('layouts.ViewIndex', compact('notificacaoLst', 'htmlGrid', 'title', 'btnAdd'));
+        return view('layouts.ViewIndex', compact('notificacaoLst', 'htmlGrid', 'title', 'btnAdd'));
     }
 
     public function addForm() {
@@ -109,6 +112,7 @@ class SenhasController extends Controller {
         $icon = 'fa fa-save';
 
         $notificacaoLst = $this->notificacao;
+
 
         return view('layouts.ViewForm', compact('notificacaoLst', 'icon', 'title', 'formulario'));
     }
@@ -200,14 +204,17 @@ class SenhasController extends Controller {
     }
 
     public function envia(Request $request) {
-
+//$toaster = Toaster();
         $senha = new Senhas();
 
         $userID = new User();
 
         $send = $senha->sendData($request);
+//    public function add($message, $theme = 'info', $closeBtn = false, $title = '', $expires = null)
+//toaster()->add('Add message here')->success()->toast();
+        toaster()->add('Add message here');
 
-        return redirect()->route('senha')->with('info');
+        return view('layouts.ViewIndex');
     }
 
     public function gridsenhasload() {

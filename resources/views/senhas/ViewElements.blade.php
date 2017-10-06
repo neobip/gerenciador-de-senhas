@@ -1,4 +1,6 @@
 <!-- /.row -->
+
+ 
 <div class="row">
     <div class="col-sm-12">
         @if(isset($elements['id']))

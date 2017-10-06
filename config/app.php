@@ -165,6 +165,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         
+    Laralabs\Toaster\ToasterServiceProvider::class
+        
     ],
     /*
       |--------------------------------------------------------------------------
