@@ -53,42 +53,47 @@ class AcessoController extends Controller {
 
         $title = 'Cadastrar acesso';
 
-        $form = new Form('enviaAcessos', 'POST', 'acesso.ViewAddAcessos');
+        $form = new Form('enviaAcessos', 'POST', 'acesso.ViewElements');
 
-        $element = new Element('text', 'acesso', 'Acesso', '');
+        $element = new Element('text', 'acesso', 'acesso', 'Acesso');
         $element->required = 'required';
         $form->addElement($element);
 
-        $element = new Element('text', 'link', 'Link', '');
+        $element = new Element('text', 'link', 'link', 'Link');
         $element->required = 'required';
         $form->addElement($element);
 
         $formulario = $form->getHtml();
 
-        return view('layouts.ViewAdd', compact('title', 'formulario'));
+        return view('layouts.ViewFormModal', compact('title', 'formulario'));
     }
 
     public function edit(Request $request) {
 
         $acessos = Acesso::acessoID($request->id);
 
-        $form = new Form('enviaAcessos', 'POST', 'acesso.ViewEditAcessos');
+        $form = new Form('enviaAcessos', 'POST', 'acesso.ViewElements');
 
-        $element = new Element('hidden', 'id', '', $acessos->id);
+        $element = new Element('hidden', 'id', 'id', '');
         $element->required = 'required';
+        $element->setValue($acessos->id);
         $form->addElement($element);
 
-        $element = new Element('text', 'acesso', 'Acesso', $acessos->acesso, 'Acesso');
+        $element = new Element('text', 'acesso', 'acesso', 'Acesso');
+        $element->required = 'required';
+        $element->setValue($acessos->acesso);
         $form->addElement($element);
 
-        $element = new Element('text', 'link', 'Link', $acessos->link);
+        $element = new Element('text', 'link', 'link', $acessos->link);
+        $element->required = 'required';
+        $element->setValue($acessos->link);
         $form->addElement($element);
 
         $delTitle = 'Deseja deletar o acesso ' . $acessos->acesso . "?";
 
         $formulario = $form->getHtml();
 
-        return view('layouts.ViewEdit', compact('acessos', 'formulario', 'delTitle'));
+        return view('layouts.ViewFormModal', compact('acessos', 'formulario', 'delTitle'));
     }
 
     public function del(Request $request) {
@@ -119,7 +124,7 @@ class AcessoController extends Controller {
 
     public function getAcessos() {
         $acessos = Acesso::acessosLst();
-        
+
 //        print "<pre>";
 //        print_r(json_encode($acessos));
 //        die();

@@ -1,4 +1,0 @@
-
-
-{!! $elements['acesso'] !!} 
-{!! $elements['link'] !!}

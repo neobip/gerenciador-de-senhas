@@ -39,23 +39,8 @@
             <ul class="dropdown-menu dropdown-user">
 
                 <li>
-                    {{ Html::linkAction('UserController@editPasswordForm', 
-                                                'Mudar senha', 
-                                                array(
-                                                    'id'=>Auth::user()->id
-                                                ), 
-                                                array(
-//                                                    'class' => 'edit-modal',
-//                                                    'data-toggle'=>'modal',
-//                                                    'data-name'=>'edit-modal',
-//                                                    'data-target'=> 'usuarios',
-//                                                    'name'=>Auth::user()->name,
-//                                                    'data-id'=>Auth::user()->id,
-                                                )
-                                            ) 
-                    }}
-
-                    <!--{{ Html::linkAction('UserController@editPasswordForm', ' Mudar Senha', array('data-id'=>Auth::user()->id, 'data-name'=>Auth::user()->name),null, array('class' => 'edit-modal')) }}-->
+            
+                    {{ Html::linkAction('UserController@editForm', ' Mudar Senha', array('data-id'=>Auth::user()->id, 'data-name'=>Auth::user()->name),null, array('class' => 'edit-modal')) }}
                 <li class="divider"></li>
                 <li>
                     <a href="{{ route('logout') }}"

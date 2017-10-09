@@ -164,8 +164,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        
-    Laralabs\Toaster\ToasterServiceProvider::class
+//        Roksta\Toastr\ToastrServiceProvider::class,
         
     ],
     /*
@@ -215,9 +214,10 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 //        'Form' => Collective\Html\FormFacade::class,
 //        'Html' => Collective\Html\HtmlFacade::class,
-        'Form' => 'App\Libs\Form',
+        'Form' => 'Collective\Html\FormFacade',
         'Html' => 'Collective\Html\HtmlFacade',
-        'Constantes' => 'App\Libs'
+        'Constantes' => 'App\Libs',
+//        'Toast' => Roksta\Toastr\Toast::class,
 //        'Datatables' => Yajra\Datatables\Datatables::class,
 
     ],

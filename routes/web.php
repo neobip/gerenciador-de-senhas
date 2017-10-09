@@ -46,8 +46,7 @@ Route::get('acessos', 'AcessoController@getAcessos');
 Route::get('/usuarios/index', 'UserController@index');
 Route::get('/usuarios/add', 'UserController@addForm');
 Route::get('/usuarios/edit', 'UserController@editForm');
-Route::get('/usuarios/editPassword', 'UserController@editPasswordForm');
-Route::post('/usuarios/envia', 'UserController@envia');
+Route::post('/usuarios/envia', 'UserController@envia')->name('enviaUser');
 Route::get('usuarios/index', 'UserController@index')->name('usuario');
 Route::get('usuarios/gridUsuariosload', 'UserController@gridUsuariosload')->name('gridUsuarios');
 // --- [end route usuarios] -- /

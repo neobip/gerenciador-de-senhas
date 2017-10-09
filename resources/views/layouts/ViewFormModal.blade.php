@@ -1,8 +1,5 @@
 {!! $formulario !!}
 
-<div class="deleteContent">
-    <h3>{{ $delTitle }}</h3>
-</div>
 
 <div class="modal-footer">
     <button type="button" class="btn actionBtn" data-dismiss="modal">

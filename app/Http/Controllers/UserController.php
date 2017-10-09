@@ -8,7 +8,7 @@ use App\Notificacao;
 use App\Libs\Grid;
 use App\Libs\Button;
 use App\Libs\Form;
-use App\Libs\Field;
+use App\Libs\Element;
 
 class UserController extends Controller {
 
@@ -58,26 +58,26 @@ class UserController extends Controller {
         return view('user.ViewAdd', compact('title'));
     }
 
-    public function editPasswordForm(Request $request) {
-        $title = 'Mudar Senha';
 
-        $usuario = User::userID($request->id);
-
-        return view('user.ViewEditPassword', compact('usuario', 'title', 'notificacaoLst'));
-    }
 
     public function editForm(Request $request) {
-
-        $title = 'Edição de usuário';
-
         $usuario = User::userID($request->id);
 
-        $tipo = array(1 => 'Administrador', 2 => 'usuário');
-        $ativado = array('S' => 'Sim', 'N' => 'Não');
+        $form = new Form('enviaUser', 'POST', 'user.ViewElements');
 
-        $notificacaoLst = Notificacao::notificacaoLst();
+        $element = new Element('hidden', 'id', 'id', '');
+        $element->required = 'required';
+        $element->setValue($usuario->id);
+        $form->addElement($element);
 
-        return view('user.ViewEdit', compact('usuario', 'title', 'tipo', 'ativado', 'notificacaoLst'));
+        $element = new Element('password', 'password', 'password', 'Senha');
+        $element->setValue($usuario->password);
+        $form->addElement($element);
+
+        $formulario = $form->getHtml();
+
+        return view('layouts.ViewFormModal', compact('usuario', 'formulario'));
+        
     }
 
     public function envia(Request $request) {

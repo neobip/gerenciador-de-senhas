@@ -31,6 +31,8 @@ class Element {
     public $optionEmpty;
     public $multiselect;
     public $valueDefault;
+    public $msg;
+    public $alertType;
 
     public function __construct($type, $name, $id, $label) {
         $this->type = $type;
@@ -106,6 +108,16 @@ class Element {
 
                 break;
 
+            case 'display':
+                $element = '<div class = "alert alert-"'.$this->alertType.'" id="#alerta" alert-block">
+                        <button type = "button" class = "close" data-dismiss = "alert">×</button>
+                        <strong> 
+                            '.$this->msg.'
+                        </strong>
+                    </div>';
+                break;
+
+
 
             default:
                 $element = '<label>' . $this->label . '</label>';
@@ -119,6 +131,17 @@ class Element {
 
     public function __toString() {
         return $this->getHtml();
+    }
+    
+    public function setMsg($msg){
+        if (isset($this)) {
+            $this->msg = $msg;
+        }
+    }
+    public function setAlert($msg){
+        if (isset($this)) {
+            $this->alertType = $msg;
+        }
     }
 
     // START SELECT Options

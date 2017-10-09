@@ -7,7 +7,6 @@ $(document).ready(function () {
         var dataID = $(this).attr('data-id');
         var name = $(this).attr('name');
         var id = $(this).attr('id');
-//        alert('oi');
         data: url;
 
         if (url.indexOf('#') == 0) {
@@ -68,7 +67,6 @@ function action(id, name) {
                 $('.modal-footer').on('click', '.edit', function () {
 //                    e.preventDefault();
                                         
-
                     $.ajax({
                         dataType: 'json',
                         type: 'post',

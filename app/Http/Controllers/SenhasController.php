@@ -11,7 +11,8 @@ use App\Libs\Grid;
 use App\Libs\Button;
 use App\Libs\Form;
 use App\Libs\Element;
-use Laralabs\Toaster\Toaster;
+
+//use Roksta\Toastr\Toast;
 
 class SenhasController extends Controller {
 
@@ -52,7 +53,6 @@ class SenhasController extends Controller {
 
         $htmlGrid = $grid->createGrid();
 //        http://docs.laralabs.uk/toaster/
-        toaster()->add('Add message here')->title('Message title here');
 
         return view('layouts.ViewIndex', compact('notificacaoLst', 'htmlGrid', 'title', 'btnAdd'));
     }
@@ -210,11 +210,19 @@ class SenhasController extends Controller {
         $userID = new User();
 
         $send = $senha->sendData($request);
-//    public function add($message, $theme = 'info', $closeBtn = false, $title = '', $expires = null)
-//toaster()->add('Add message here')->success()->toast();
-        toaster()->add('Add message here');
+//        
+//        $alert = new Element('display', '', '', '');
+//        $alert->setAlert('info');
+//        $alert->setMsg('Senha atualizada.');
+//        
+//        $alerta = $alert->getHtml();
+    
+        if (isset($request->id)) {
+            return redirect()->route('senha')->with('info','Senha atualizada');
+        } else {
+            return redirect()->route('senha')->with('success', 'Senha Adicionada.');
+        }
 
-        return view('layouts.ViewIndex');
     }
 
     public function gridsenhasload() {
