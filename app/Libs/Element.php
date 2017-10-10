@@ -95,10 +95,10 @@ class Element {
 //                                                    name="' . $this->name . '" 
 //                                                    data-toggle="' . $this->toggle . '"
 //                                                    data-id="' . $dataID . '" title="' . $this->title . '"><i id="' . $this->id . '" class="' . $this->icon . '" ></i> ' . $this->title . '</a>';
-                $element = '<a href="' . route($this->route) . '?id="  class="' . $this->class . '" id="' . $this->id . '" 
+                $element = ' <a href="' . route($this->route) . '?id="  class="' . $this->class . '" id="' . $this->id . '" 
                                                     name="' . $this->name . '" 
                                                     data-toggle=""
-                                                    data-id="" title=""><i id="' . $this->id . '" class="waves-effect ' . $this->icon . '" ></i> ' . $this->value . '</a>';
+                                                    data-id="" title=""><i id="' . $this->id . '" class="waves-effect ' . $this->icon . '" ></i> ' . $this->value . '</a> ';
 
                 break;
 

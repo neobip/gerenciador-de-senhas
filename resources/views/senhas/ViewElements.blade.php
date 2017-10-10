@@ -1,7 +1,6 @@
 <!-- /.row -->
 
 
-<div class="row">
     <div class="col-sm-12">
         @if(isset($elements['id']))
         {!! $elements['id'] !!}
@@ -56,10 +55,9 @@
 
         <div id='btn' style='margin-top: 20px'>
             <div class='pull-right'>
-                {!! $elements['btnSave'] !!} {!! $elements['btnCancel'] !!}
+                {!! $elements['btnSave'] !!}  {!! $elements['btnCancel'] !!}
             </div>
         </div>
 
 
     </div>
-</div>

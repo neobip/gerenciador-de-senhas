@@ -29,6 +29,8 @@ class SenhasController extends Controller {
         $title = $this->title;
 
         $notificacaoLst = $this->notificacao;
+        
+        $icon = 'fa fa-unlock-alt';
 
         $grid = new Grid($this->idGrid);
         $grid->titleGrid = $this->title;
@@ -48,13 +50,16 @@ class SenhasController extends Controller {
 //        $btn->name = 'senhas';
 //        $btn->toggle = 'modal';
         $btn->id = 'add';
+        
 
         $btnAdd = $btn->createButton(NULL);
 
         $htmlGrid = $grid->createGrid();
 //        http://docs.laralabs.uk/toaster/
+        
+        
 
-        return view('layouts.ViewIndex', compact('notificacaoLst', 'htmlGrid', 'title', 'btnAdd'));
+        return view('layouts.ViewIndex', compact('notificacaoLst', 'htmlGrid', 'icon', 'title', 'btnAdd'));
     }
 
     public function addForm() {
@@ -86,12 +91,13 @@ class SenhasController extends Controller {
         $form->addElement($element);
 
         $element = new Element('text', 'pwd', 'pwd', 'Senha');
+        $element->setRequire();
         $form->addElement($element);
 
         $element = new Element('textarea', 'obs', 'obs', 'Observação');
         $element->row = 3;
         $form->addElement($element);
-
+        
         $element = new Element('submit', 'btnSave', 'btnSave', '');
         $element->setValue('Cadastrar');
         $element->setClass('btn btn-success pull-right m-l-5');
@@ -164,6 +170,7 @@ class SenhasController extends Controller {
 
         $element = new Element('text', 'pwd', 'pwd', 'Senha');
         $element->setValue($senhas[0]['pwd']);
+        $element->setRequire();
         $form->addElement($element);
 
         $element = new Element('textarea', 'obs', 'obs', 'Observação');
@@ -210,19 +217,12 @@ class SenhasController extends Controller {
         $userID = new User();
 
         $send = $senha->sendData($request);
-//        
-//        $alert = new Element('display', '', '', '');
-//        $alert->setAlert('info');
-//        $alert->setMsg('Senha atualizada.');
-//        
-//        $alerta = $alert->getHtml();
-    
-        if (isset($request->id)) {
-            return redirect()->route('senha')->with('info','Senha atualizada');
-        } else {
-            return redirect()->route('senha')->with('success', 'Senha Adicionada.');
-        }
 
+        if (isset($request->id)) {
+            return redirect()->route('senha')->with('info', 'Senha ' . Acesso::acessoID($request->acesso_id)['acesso'] . ' atualizada');
+        } else {
+            return redirect()->route('senha')->with('success', 'Senha ' . Acesso::acessoID($request->acesso_id)['acesso'] . ' adicionada');
+        }
     }
 
     public function gridsenhasload() {
